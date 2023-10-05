@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    #运行的环境
+    active: test
+  application:
+    name: flashcomms
+  datasource:
+    url: jdbc:mysql://${flashcomms.mysql.ip}:${flashcomms.mysql.port}/${flashcomms.mysql.db}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: ${flashcomms.mysql.username}
+    password: ${flashcomms.mysql.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    # Redis服务器地址
+    host: ${flashcomms.redis.host}
+    # Redis服务器端口号
+    port: ${flashcomms.redis.port}
+    # 使用的数据库索引，默认是0
+    database: 0
+    # 连接超时时间
+    timeout: 1800000
+    # 设置密码
+    password: ${flashcomms.redis.password}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
