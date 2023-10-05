@@ -20,6 +20,7 @@ spring:
     timeout: 1800000
     # 设置密码
     password: ${flashcomms.redis.password}
+    #时间格式转换
   jackson:
     serialization:
       write-dates-as-timestamps: true
