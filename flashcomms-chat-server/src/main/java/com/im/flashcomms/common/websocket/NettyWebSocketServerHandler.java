@@ -1,5 +1,8 @@
 package com.im.flashcomms.common.websocket;
 
+import cn.hutool.json.JSONUtil;
+import com.im.flashcomms.common.websocket.domain.enums.WSReqTypeEnum;
+import com.im.flashcomms.common.websocket.domain.vo.req.WSBaseReq;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -15,6 +18,14 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         String text = msg.text();
-        System.out.println(text);
+        WSBaseReq wsBaseReq = JSONUtil.toBean(text, WSBaseReq.class);
+        switch (WSReqTypeEnum.of(wsBaseReq.getType())){
+            case LOGIN:
+                break;
+            case AUTHORIZE:
+                break;
+            case HEARTBEAT:
+                break;
+        }
     }
 }
