@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Controller;
  * @author <a href="https://github.com/zongzibinbin">abin</a>
  * @since 2023-10-07
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
     @GetMapping("/get")
     public  String test(){
-        return "123";
+        return new String("123");
     }
 }
 
