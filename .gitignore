@@ -19,7 +19,7 @@ target/
 *.iml
 *.ipr
 *.properties
-*.jks
+!**/src/main/resources/historyhangqin.com.jksjks
 MPGenerator.java
 ### NetBeans ###
 /nbproject/private/
