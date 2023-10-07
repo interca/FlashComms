@@ -36,6 +36,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 // 关闭用户的连接
                 System.out.println("用户下线");
+                ctx.channel().close();
             }
         } else if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
              System.out.println("握手成功");
