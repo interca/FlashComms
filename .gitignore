@@ -20,6 +20,7 @@ target/
 *.ipr
 *.properties
 *.jks
+MPGenerator.java
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
