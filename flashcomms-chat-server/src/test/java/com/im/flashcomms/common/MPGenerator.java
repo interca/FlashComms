@@ -15,10 +15,6 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * 代码生成器
- */
 public class MPGenerator {
     public static void main(String[] args) {
         //代码生成器
@@ -35,7 +31,7 @@ public class MPGenerator {
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setOpen(false);
         //todo 要改输出路径
-        globalConfig.setOutputDir(System.getProperty("user.dir") + "/flashcomms-chat-server/src/main/java");
+        globalConfig.setOutputDir(System.getProperty("user.dir") + "/mallchat-chat-server/src/main/java");
         //设置作者名字
         globalConfig.setAuthor("<a href=\"https://github.com/zongzibinbin\">abin</a>");
         //去掉service的I前缀,一般只需要设置service就行
@@ -83,7 +79,7 @@ public class MPGenerator {
     public static void assembleDev(DataSourceConfig dataSourceConfig) {
         dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
         dataSourceConfig.setUsername("root");
-        dataSourceConfig.setPassword("hyjzzyfldgutyyds");
-        dataSourceConfig.setUrl("jdbc:mysql://43.139.223.241:3306/flashcomms?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC");
+        dataSourceConfig.setPassword("123456");
+        dataSourceConfig.setUrl("jdbc:mysql://111.230.27.248:3306/mallchat?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC");
     }
 }

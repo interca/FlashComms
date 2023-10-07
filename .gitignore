@@ -19,8 +19,7 @@ target/
 *.iml
 *.ipr
 *.properties
-!**/src/main/resources/historyhangqin.com.jksjks
-MPGenerator.java
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -33,3 +32,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# Temporary File
+historyhangqin.com.jks
+MPGenerator.java
+
