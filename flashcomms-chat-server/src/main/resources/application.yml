@@ -24,3 +24,9 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+
+server:
+  ssl:
+    key-store: ${flashcomms.key-store}
+    key-store-password: ${flashcomms.key-store-password}
+    key-store-type: ${flashcomms.key-store-type}

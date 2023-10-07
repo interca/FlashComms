@@ -5,9 +5,7 @@ import com.im.flashcomms.common.user.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestComponent;
 
-import java.util.List;
 
 @SpringBootTest
 public class test1 {
@@ -18,7 +16,10 @@ public class test1 {
 
     @Test
     void test(){
-        List<User> users = userMapper.selectList(null);
-        System.out.println(users);
+        User user = new User();
+        user.setName("hyj");
+        user.setOpenId("123");
+        int insert = userMapper.insert(user);
+        System.out.println(insert);
     }
 }

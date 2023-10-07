@@ -19,7 +19,7 @@ target/
 *.iml
 *.ipr
 *.properties
-
+*.jks
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
