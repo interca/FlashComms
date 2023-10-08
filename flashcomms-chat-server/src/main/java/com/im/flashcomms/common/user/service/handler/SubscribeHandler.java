@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
+ * 新关注用户
  */
 @Component
 public class SubscribeHandler extends AbstractHandler {

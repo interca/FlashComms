@@ -1,5 +1,6 @@
 package com.im.flashcomms.common.user.service.handler;
 
+import com.im.flashcomms.common.user.service.adapter.TextBuilder;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+ * 扫码用户
+ */
 @Component
 public class ScanHandler extends AbstractHandler {
 
@@ -20,8 +24,7 @@ public class ScanHandler extends AbstractHandler {
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
                                     WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         // 扫码事件处理
-        return null;
-
+        return TextBuilder.build("你好",wxMpXmlMessage);
 
     }
 
