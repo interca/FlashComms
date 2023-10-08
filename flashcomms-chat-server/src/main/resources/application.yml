@@ -33,9 +33,9 @@ server:
 
 wx:
   mp:
-    callback: ${mallchat.wx.callback}
+    callback: ${flashcomms.wx.callback}
     configs:
-      - appId: ${mallchat.wx.appId} # 第一个公众号的appid
-        secret: ${mallchat.wx.secret} # 公众号的appsecret
-        token: ${mallchat.wx.token} # 接口配置里的Token值
-        aesKey: ${mallchat.wx.aesKey} # 接口配置里的EncodingAESKey值
+      - appId: ${flashcomms.wx.appId} # 第一个公众号的appid
+        secret: ${flashcomms.wx.secret} # 公众号的appsecret
+        token: ${flashcomms.wx.token} # 接口配置里的Token值
+        aesKey: ${flashcomms.wx.aesKey} # 接口配置里的EncodingAESKey值

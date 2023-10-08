@@ -1,6 +1,7 @@
 package com.im.flashcomms.common.user.config;
 
 
+import com.im.flashcomms.common.user.service.handler.LogHandler;
 import com.im.flashcomms.common.user.service.handler.MsgHandler;
 import com.im.flashcomms.common.user.service.handler.ScanHandler;
 import com.im.flashcomms.common.user.service.handler.SubscribeHandler;
@@ -13,7 +14,7 @@ import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sun.rmi.log.LogHandler;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class WxMpConfiguration {
         final WxMpMessageRouter newRouter = new WxMpMessageRouter(wxMpService);
 
         // 记录所有事件的日志 （异步执行）
-        newRouter.rule().handler((WxMpMessageHandler) this.logHandler).next();
+        newRouter.rule().handler( this.logHandler).next();
 
         // 关注事件
         newRouter.rule().async(false).msgType(EVENT).event(SUBSCRIBE).handler(this.subscribeHandler).end();
