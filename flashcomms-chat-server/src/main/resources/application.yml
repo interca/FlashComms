@@ -30,3 +30,12 @@ server:
     key-store: ${flashcomms.key-store}
     key-store-password: ${flashcomms.key-store-password}
     key-store-type: ${flashcomms.key-store-type}
+
+wx:
+  mp:
+    callback: ${mallchat.wx.callback}
+    configs:
+      - appId: ${mallchat.wx.appId} # 第一个公众号的appid
+        secret: ${mallchat.wx.secret} # 公众号的appsecret
+        token: ${mallchat.wx.token} # 接口配置里的Token值
+        aesKey: ${mallchat.wx.aesKey} # 接口配置里的EncodingAESKey值
