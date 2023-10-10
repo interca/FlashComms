@@ -27,7 +27,7 @@ public class ScanHandler extends AbstractHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
                                     WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        String authorizeUrl= String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "wx/portal/public/callBack"));
+        String authorizeUrl= String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "/wx/portal/public/callBack"));
         // 扫码事件处理
         return TextBuilder.build("请点击链接授权：<a href=\"" + authorizeUrl + "\">登录</a>",wxMpXmlMessage);
 
