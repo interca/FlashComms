@@ -1,5 +1,7 @@
 package com.im.flashcomms.common.user.service.handler;
 
+import com.im.flashcomms.common.user.service.WXMsgService;
+import com.im.flashcomms.common.user.service.adapter.TextBuilder;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -18,31 +20,28 @@ import java.util.Map;
 public class SubscribeHandler extends AbstractHandler {
 
 
+    @Autowired
+    private WXMsgService wxMsgService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
                                     WxSessionManager sessionManager) throws WxErrorException {
 
         this.logger.info("新关注用户 OPENID: " + wxMessage.getFromUser());
-
         WxMpXmlOutMessage responseResult = null;
         try {
-
+           responseResult =  wxMsgService.scan(wxMessage);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }
-
         if (responseResult != null) {
             return responseResult;
         }
-
         try {
-
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }
-
-        return null;
+        return TextBuilder.build("感谢关注",wxMessage);
     }
 
 
