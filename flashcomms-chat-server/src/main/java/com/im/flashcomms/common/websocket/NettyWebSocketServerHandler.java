@@ -26,6 +26,14 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     @Autowired
     private WebSocketService webSocketService;
 
+
+
+
+    /**
+     * 连接建立
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         webSocketService.connect(ctx.channel());
@@ -54,6 +62,11 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         //super.userEventTriggered(ctx, evt);
     }
 
+
+
+
+
+
     /**
      * 读取事件
      * @param ctx
@@ -69,6 +82,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
                 ctx.channel().writeAndFlush(new TextWebSocketFrame("123"));
                 break;
             case AUTHORIZE:
+                webSocketService.handleLoginReq(ctx.channel());
                 break;
             case HEARTBEAT:
                 break;
