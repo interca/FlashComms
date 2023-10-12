@@ -18,4 +18,11 @@ public interface WebSocketService {
      * @param channel
      */
     void handleLoginReq(Channel channel) throws WxErrorException;
+
+
+    /**
+     * channel断开连接
+     * @param channel
+     */
+    void offLine(Channel channel);
 }

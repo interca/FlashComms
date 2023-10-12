@@ -34,7 +34,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     @Autowired
     private WxMpService wxMpService;
 
-    private static int  MAXIMUM_SIZE = 1000;
+    private final static int  MAXIMUM_SIZE = 1000;
 
     /**
      * 关联用户连接(登陆态/游客)
@@ -77,6 +77,18 @@ public class WebSocketServiceImpl implements WebSocketService {
         sendMsg(channel, WebSocketAdapter.buildResp(wxMpQrCodeTicket));
     }
 
+
+    /**
+     * 用户下线统一处理
+     * @param channel
+     */
+    @Override
+    public void offLine(Channel channel) {
+        //移除channel
+        ONLINE_WS_MAP.remove(channel);
+        //todo 用户下线
+    }
+
     /**
      * 推送信息
      * @param channel
@@ -95,8 +107,8 @@ public class WebSocketServiceImpl implements WebSocketService {
     private Integer generateLoginCode(Channel channel) {
         Integer code;
         do{
-            code = RandomUtil.randomInt(Integer.MIN_VALUE);
-        }while (Objects.isNull(WAIT_LOGIN_MAP.asMap().putIfAbsent(code,channel)));
+            code = RandomUtil.randomInt(Integer.MAX_VALUE);
+        }while (Objects.nonNull(WAIT_LOGIN_MAP.asMap().putIfAbsent(code,channel)));
         return code;
     }
 }
