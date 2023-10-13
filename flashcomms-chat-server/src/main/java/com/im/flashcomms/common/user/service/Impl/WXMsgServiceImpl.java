@@ -54,10 +54,10 @@ public class WXMsgServiceImpl implements WXMsgService {
         if(Objects.isNull(code))return null;
         User user = userDao.getByOpenId(openId);
         boolean registered = Objects.nonNull(user);
-        boolean authorized = StrUtil.isNotBlank(user.getAvatar());
+        boolean authorized =registered && StrUtil.isNotBlank(user.getAvatar());
         //用户已经注册并且授权
         if(registered && authorized){
-            //登陆成功
+
         }else{
             User  insert =  UserAdapter.buildUserSave(openId);
             userService.register(insert);
