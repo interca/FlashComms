@@ -101,6 +101,16 @@ public class WebSocketServiceImpl implements WebSocketService {
         //todo 用户下线
     }
 
+    /**
+     * 扫码成功等待用户授权
+     * @param code
+     */
+    @Override
+    public void waitAuthorize(Integer code) {
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        sendMsg(channel,WebSocketAdapter.buildWaitAuthorizeResp());
+    }
+
 
     /**
      * 扫码登陆成功

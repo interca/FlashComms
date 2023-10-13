@@ -26,6 +26,11 @@ public interface WebSocketService {
      */
     void offLine(Channel channel);
 
+    /**
+     * 扫码成功等待用户授权
+     * @param code
+     */
+    void waitAuthorize(Integer code);
 
     /**
      * 扫码登陆成功
@@ -33,4 +38,6 @@ public interface WebSocketService {
      * @param id
      */
     void scanLoginSuccess(Integer code, Long id);
+
+
 }
