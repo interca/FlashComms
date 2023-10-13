@@ -1,6 +1,7 @@
 package com.im.flashcomms.common.user.controller;
 
 
+import com.im.flashcomms.common.user.service.WXMsgService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
@@ -29,9 +30,15 @@ public class WxPortalController {
 
 
 
+    @Autowired
     private final WxMpService wxService;
+
+    @Autowired
     private final WxMpMessageRouter messageRouter;
 
+
+    @Autowired
+    private WXMsgService wxMsgService;
 
     @GetMapping(produces = "text/plain;charset=utf-8")
     public String authGet(@RequestParam(name = "signature", required = false) String signature,
@@ -56,9 +63,12 @@ public class WxPortalController {
     @GetMapping("/callBack")
     public RedirectView callBack(@RequestParam String code) throws WxErrorException {
         WxOAuth2AccessToken accessToken = wxService.getOAuth2Service().getAccessToken(code);
-        WxOAuth2UserInfo zh_cn = wxService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
-        System.out.println(zh_cn);
-        return null;
+        WxOAuth2UserInfo userInfo = wxService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
+        System.out.println(userInfo);
+        wxMsgService.authorize(userInfo);
+        RedirectView redirectView  =new RedirectView();
+        redirectView.setUrl("https://leetcode.cn/u/hong-shen-2/");
+        return redirectView;
     }
 
     @PostMapping(produces = "application/xml; charset=UTF-8")

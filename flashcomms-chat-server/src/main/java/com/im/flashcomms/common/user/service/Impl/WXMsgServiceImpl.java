@@ -8,6 +8,7 @@ import com.im.flashcomms.common.user.service.WXMsgService;
 import com.im.flashcomms.common.user.service.adapter.TextBuilder;
 import com.im.flashcomms.common.user.service.adapter.UserAdapter;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
@@ -65,6 +66,16 @@ public class WXMsgServiceImpl implements WXMsgService {
         String authorizeUrl= String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "/wx/portal/public/callBack"));
         // 扫码事件处理
         return TextBuilder.build("请点击链接授权：<a href=\"" + authorizeUrl + "\">登录</a>",wxMpXmlMessage);
+    }
+
+
+    /**
+     * 用户授权
+     * @param userInfo
+     */
+    @Override
+    public void authorize(WxOAuth2UserInfo userInfo) {
+
     }
 
     private String getEventKey(WxMpXmlMessage wxMpXmlMessage) {
