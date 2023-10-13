@@ -4,6 +4,9 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.im.flashcomms.common.user.dao.UserDao;
+import com.im.flashcomms.common.user.domain.entity.User;
+import com.im.flashcomms.common.user.service.LoginService;
 import com.im.flashcomms.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.im.flashcomms.common.websocket.domain.enums.WSRespTypeEnum;
 import com.im.flashcomms.common.websocket.domain.vo.resp.WSBaseResp;
@@ -18,6 +21,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.tomcat.websocket.WsRemoteEndpointAsync;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -32,7 +36,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
+    @Lazy
     private WxMpService wxMpService;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private LoginService loginService;
 
     private final static int  MAXIMUM_SIZE = 1000;
 
@@ -86,8 +97,30 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void offLine(Channel channel) {
         //移除channel
         ONLINE_WS_MAP.remove(channel);
+
         //todo 用户下线
     }
+
+
+    /**
+     * 扫码登陆成功
+     * @param code
+     * @param id
+     */
+    @Override
+    public void scanLoginSuccess(Integer code, Long id) {
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        if(Objects.isNull(channel)){
+            return;
+        }
+        User user = userDao.getById(id);
+        //移除code
+        WAIT_LOGIN_MAP.asMap().remove(code);
+        //获取token
+        String token = loginService.login(id);
+        sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+    }
+
 
     /**
      * 推送信息

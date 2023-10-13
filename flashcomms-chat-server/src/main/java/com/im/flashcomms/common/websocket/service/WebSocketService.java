@@ -25,4 +25,12 @@ public interface WebSocketService {
      * @param channel
      */
     void offLine(Channel channel);
+
+
+    /**
+     * 扫码登陆成功
+     * @param code
+     * @param id
+     */
+    void scanLoginSuccess(Integer code, Long id);
 }
