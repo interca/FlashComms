@@ -1,5 +1,6 @@
 package com.im.flashcomms.common;
 
+import com.im.flashcomms.common.common.utils.JwtUtils;
 import com.im.flashcomms.common.user.mapper.UserMapper;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class test1 {
 
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Autowired
     private UserMapper userMapper;
@@ -22,6 +25,11 @@ public class test1 {
     void test() throws WxErrorException {
         WxMpQrCodeTicket wxMpQrCodeTicket = wxService.getQrcodeService().qrCodeCreateTmpTicket(1, 1000);
         System.out.println(wxMpQrCodeTicket.getUrl());
+    }
 
+    @Test
+    void  test2(){
+        String token = jwtUtils.createToken(12L);
+        System.out.println(token);
     }
 }

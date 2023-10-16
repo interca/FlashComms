@@ -39,3 +39,6 @@ wx:
         secret: ${flashcomms.wx.secret} # 公众号的appsecret
         token: ${flashcomms.wx.token} # 接口配置里的Token值
         aesKey: ${flashcomms.wx.aesKey} # 接口配置里的EncodingAESKey值
+
+jwt:
+  secret: ${flashcomms.jwt.secret}
