@@ -2,6 +2,7 @@ package com.im.flashcomms.common;
 
 import com.im.flashcomms.common.common.utils.JwtUtils;
 import com.im.flashcomms.common.user.mapper.UserMapper;
+import com.im.flashcomms.common.user.service.LoginService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
@@ -32,6 +33,9 @@ public class test1 {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Autowired
+    private LoginService loginService;
+
 
     //@Test
     void test() throws WxErrorException {
@@ -41,9 +45,8 @@ public class test1 {
 
     @Test
     void  test2(){
-        RLock lock = redissonClient.getLock("123");
-        boolean b = lock.tryLock();
-        System.out.println(b);
-        lock.unlock();
+       String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjExMDAxLCJjcmVhdGVUaW1lIjoxNjk3NTUwNjMyfQ.xDyN0nsRWed0ghxLLkWbZS27uXaE6vwURPxk6DxMuZ8";
+        Long validUid = loginService.getValidUid(token);
+        System.out.println(validUid);
     }
 }
