@@ -22,10 +22,14 @@ public class ThreadPoolConfig implements AsyncConfigurer {
      * 项目共用线程池
      */
     public static final String FLASHCOMMS_EXECUTOR = "flashcommsExecutor";
+
+
     /**
      * websocket通信线程池
      */
     public static final String WS_EXECUTOR = "websocketExecutor";
+
+
 
     @Override
     public Executor getAsyncExecutor() {
