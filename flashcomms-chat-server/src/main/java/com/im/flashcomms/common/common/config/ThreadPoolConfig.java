@@ -1,5 +1,6 @@
 package com.im.flashcomms.common.common.config;
 
+import com.im.flashcomms.common.common.Thread.MyThreadFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -41,6 +42,7 @@ public class ThreadPoolConfig implements AsyncConfigurer {
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(200);
         executor.setThreadNamePrefix("flashcomms-executor-");
+        executor.setThreadFactory(new MyThreadFactory(executor));
         //拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());//满了调用线程执行，认为重要任务
         executor.initialize();

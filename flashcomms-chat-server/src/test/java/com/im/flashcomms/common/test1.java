@@ -1,5 +1,7 @@
 package com.im.flashcomms.common;
 
+import com.im.flashcomms.common.common.Thread.MyUncaughtExceptionHandler;
+import com.im.flashcomms.common.common.config.ThreadPoolConfig;
 import com.im.flashcomms.common.common.utils.JwtUtils;
 import com.im.flashcomms.common.user.mapper.UserMapper;
 import com.im.flashcomms.common.user.service.LoginService;
@@ -11,8 +13,10 @@ import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 
 @SpringBootTest
@@ -37,6 +41,11 @@ public class test1 {
     private LoginService loginService;
 
 
+    @Autowired
+    @Qualifier(ThreadPoolConfig.FLASHCOMMS_EXECUTOR)
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+
     //@Test
     void test() throws WxErrorException {
         WxMpQrCodeTicket wxMpQrCodeTicket = wxService.getQrcodeService().qrCodeCreateTmpTicket(1, 1000);
@@ -48,5 +57,17 @@ public class test1 {
        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjExMDAxLCJjcmVhdGVUaW1lIjoxNjk3NTUwNjMyfQ.xDyN0nsRWed0ghxLLkWbZS27uXaE6vwURPxk6DxMuZ8";
         Long validUid = loginService.getValidUid(token);
         System.out.println(validUid);
+    }
+
+    @Test
+    void test3() throws InterruptedException {
+
+        Thread thread = new Thread(() -> {
+            System.out.println("hyj");
+            throw new RuntimeException("123");
+        });
+        thread.setUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+        thread.start();
+        Thread.sleep(20);
     }
 }
