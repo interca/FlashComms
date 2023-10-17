@@ -6,6 +6,9 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,14 +28,22 @@ public class test1 {
 
     @Autowired
      WxMpService wxService;
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+
     //@Test
     void test() throws WxErrorException {
         WxMpQrCodeTicket wxMpQrCodeTicket = wxService.getQrcodeService().qrCodeCreateTmpTicket(1, 1000);
         System.out.println(wxMpQrCodeTicket.getUrl());
     }
 
-    //@Test
+    @Test
     void  test2(){
-       stringRedisTemplate.opsForValue().set("hyj","sss");
+        RLock lock = redissonClient.getLock("123");
+        boolean b = lock.tryLock();
+        System.out.println(b);
+        lock.unlock();
     }
 }
