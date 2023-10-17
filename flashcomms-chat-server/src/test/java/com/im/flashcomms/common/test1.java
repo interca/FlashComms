@@ -8,6 +8,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 
 @SpringBootTest
@@ -20,16 +21,18 @@ public class test1 {
     private UserMapper userMapper;
 
     @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
      WxMpService wxService;
-    @Test
+    //@Test
     void test() throws WxErrorException {
         WxMpQrCodeTicket wxMpQrCodeTicket = wxService.getQrcodeService().qrCodeCreateTmpTicket(1, 1000);
         System.out.println(wxMpQrCodeTicket.getUrl());
     }
 
-    @Test
+    //@Test
     void  test2(){
-        String token = jwtUtils.createToken(12L);
-        System.out.println(token);
+       stringRedisTemplate.opsForValue().set("hyj","sss");
     }
 }
