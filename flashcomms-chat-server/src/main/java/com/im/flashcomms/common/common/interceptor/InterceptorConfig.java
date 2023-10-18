@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.exception;
+package com.im.flashcomms.common.common.interceptor;
 
 import com.im.flashcomms.common.common.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
