@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-10-18
  */
 @Service
-public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpack> implements IUserBackpackService {
+public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpack>  {
 
 }
