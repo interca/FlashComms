@@ -61,6 +61,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 .filter(h -> h.startsWith(AUTHORIZATION_SCHEMA))
                 .map(h -> h.replaceFirst(AUTHORIZATION_SCHEMA, ""))
                 .orElse(null);
+
         return s;
     }
 }
