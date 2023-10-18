@@ -132,6 +132,26 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
 
+
+    /**
+     * 用户尝试用token重连
+     * @param channel
+     * @param token
+     */
+    @Override
+    public void authorize(Channel channel, String token) {
+        Long uid = loginService.getValidUid(token);
+        if(Objects.nonNull(uid)){
+            //登录成功
+            User user = userDao.getById(uid);
+            sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+        }else {
+            //告诉前端要去除token
+            sendMsg(channel,WebSocketAdapter.buildInvalidTokenResp());
+        }
+    }
+
+
     /**
      * 推送信息
      * @param channel

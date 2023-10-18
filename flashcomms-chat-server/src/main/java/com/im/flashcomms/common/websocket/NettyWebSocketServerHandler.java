@@ -97,11 +97,14 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         String text = msg.text();
         WSBaseReq wsBaseReq = JSONUtil.toBean(text, WSBaseReq.class);
         switch (WSReqTypeEnum.of(wsBaseReq.getType())){
+            //用户第一次登录
             case LOGIN:
-                System.out.println("进入二维码获取接口");
+                //System.out.println("进入二维码获取接口");
                 webSocketService.handleLoginReq(ctx.channel());
                 break;
+            //用户尝试重连，不进行扫码登录
             case AUTHORIZE:
+                webSocketService.authorize(ctx.channel(),wsBaseReq.getData());
                 break;
             case HEARTBEAT:
                 break;

@@ -40,4 +40,10 @@ public interface WebSocketService {
     void scanLoginSuccess(Integer code, Long id);
 
 
+    /**
+     * 用户尝试用token重连
+     * @param channel
+     * @param data
+     */
+    void authorize(Channel channel, String data);
 }
