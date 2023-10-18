@@ -1,7 +1,5 @@
 package com.im.flashcomms.common.common.interceptor;
 
-import cn.hutool.http.ContentType;
-import com.google.common.base.Charsets;
 import com.im.flashcomms.common.common.exception.HttpErrorEnum;
 import com.im.flashcomms.common.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,9 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     public static  final String AUTHORIZATION_SCHEMA = "Bearer ";
 
+
+    public static  final String UID = "uid";
+
     @Autowired
     private LoginService loginService;
 
@@ -32,7 +33,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token = getToken(request);
         Long validUid = loginService.getValidUid(token);
         if(Objects.nonNull(validUid)){
-           request.setAttribute("uid",validUid);
+           request.setAttribute(UID,validUid);
         }else {//用户未登录
             //判断是是不是public接口
             boolean a = isPublic(request);

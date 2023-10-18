@@ -19,7 +19,6 @@ public enum HttpErrorEnum {
 
     private Integer httpCode;
 
-
     private String desc;
 
     public  void sendHttpError(HttpServletResponse response) throws IOException {

@@ -61,13 +61,7 @@ public class test1 {
 
     @Test
     void test3() throws InterruptedException {
-
-        Thread thread = new Thread(() -> {
-            System.out.println("hyj");
-            throw new RuntimeException("123");
-        });
-        thread.setUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
-        thread.start();
-        Thread.sleep(20);
+        String token = loginService.login(1001L);
+        System.out.println(token);
     }
 }
