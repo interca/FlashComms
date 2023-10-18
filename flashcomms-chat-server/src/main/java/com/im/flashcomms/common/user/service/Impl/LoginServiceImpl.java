@@ -78,10 +78,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Long getValidUid(String token) {
         Long uid = jwtUtils.getUidOrNull(token);
+        System.out.println(uid);
         if(Objects.isNull(uid)){
             return null;
         }
-        String oldToken = RedisKey.getKey(getUserTokenKey(uid));
+        String oldToken = stringRedisTemplate.opsForValue().get(getUserTokenKey(uid));
         if(StringUtils.isBlank(oldToken)){
             return null;
         }

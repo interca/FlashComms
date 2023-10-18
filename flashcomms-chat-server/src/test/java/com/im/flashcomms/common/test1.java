@@ -54,7 +54,7 @@ public class test1 {
 
     @Test
     void  test2(){
-       String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjExMDAxLCJjcmVhdGVUaW1lIjoxNjk3NTUwNjMyfQ.xDyN0nsRWed0ghxLLkWbZS27uXaE6vwURPxk6DxMuZ8";
+       String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjExMDAxLCJjcmVhdGVUaW1lIjoxNjk3NjA2NjM3fQ.td41kLB1z3_tbpVQ4ScDJVnX45tNWL1wCkTfhStLQ5E";
         Long validUid = loginService.getValidUid(token);
         System.out.println(validUid);
     }

@@ -14,6 +14,8 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -73,6 +75,10 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             }
         } else if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
              System.out.println("握手成功");
+            String token = NettyUtil.getAttr(ctx.channel(), NettyUtil.TOKEN);
+            if(StrUtil.isNotBlank(token)){
+                webSocketService.authorize(ctx.channel(),token);
+            }
         }
         //super.userEventTriggered(ctx, evt);
     }
