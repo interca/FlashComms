@@ -24,6 +24,9 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
 
 server:
   ssl:
