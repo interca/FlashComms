@@ -2,6 +2,8 @@ package com.im.flashcomms.common.user.controller;
 
 
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,11 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/capi/user")
+@Api(tags = "用户模块")
 public class UserController {
 
     @GetMapping("/userInfo")
+    @ApiOperation(value = "获取用户信息")
     public UserInfoResp getUserInfo(@RequestParam Long id){
-        return null;
+        return new UserInfoResp();
     }
 }
 
