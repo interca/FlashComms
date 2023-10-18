@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户模块")
 public class UserController {
 
-    @GetMapping("/userInfo")
+    @GetMapping("/public/userInfo")
     @ApiOperation(value = "获取用户信息")
     public UserInfoResp getUserInfo(@RequestParam Long id){
         return new UserInfoResp();
