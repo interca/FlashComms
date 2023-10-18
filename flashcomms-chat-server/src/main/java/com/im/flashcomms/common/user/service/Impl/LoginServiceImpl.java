@@ -78,7 +78,6 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Long getValidUid(String token) {
         Long uid = jwtUtils.getUidOrNull(token);
-        System.out.println(uid);
         if(Objects.isNull(uid)){
             return null;
         }
