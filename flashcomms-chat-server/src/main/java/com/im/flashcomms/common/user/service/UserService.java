@@ -2,6 +2,7 @@ package com.im.flashcomms.common.user.service;
 
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 
 /**
@@ -28,4 +29,12 @@ public interface UserService {
      * @return
      */
     UserInfoResp getUserInfo(Long uid);
+
+
+    /**
+     * 用户改名
+     * @param uid
+     * @param name
+     */
+    void modifyName(Long uid, String name);
 }
