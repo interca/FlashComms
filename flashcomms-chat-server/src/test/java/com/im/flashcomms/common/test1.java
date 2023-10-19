@@ -61,7 +61,7 @@ public class test1 {
 
     @Test
     void test3() throws InterruptedException {
-        String token = loginService.login(1001L);
+        String token = loginService.login(11001L);
         System.out.println(token);
     }
 }

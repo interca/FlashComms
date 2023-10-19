@@ -9,9 +9,10 @@ public enum CommonErrorEnum {
 
     PARAM_INVALID(-2,"参数校验失败"),
 
-    SYSTEM_ERROR(-1,"系统出小差了");
+    SYSTEM_ERROR(-1,"系统出小差了"),
 
 
+    BUSINESS_ERROR(0,"业务错误");
     private final Integer code;
 
     private final  String msg;

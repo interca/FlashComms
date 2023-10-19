@@ -22,10 +22,18 @@ public class GlobalExceptionHandler {
         return ApiResult.fail(CommonErrorEnum.PARAM_INVALID.getCode(), s.substring(0,s.length() - 1));
     }
 
+
+    @ExceptionHandler(value = BusinessException.class)
+    public ApiResult<?> businessException(BusinessException e){
+        log.info("业务异常:{}",e.getMessage());
+        return ApiResult.fail(e.getErrorCode(),e.getErrorMsg());
+    }
+
     @ExceptionHandler(value = Throwable.class)
     public ApiResult<?> throwable(Throwable e){
         log.error("系统异常:{}",e.getMessage());
         return ApiResult.fail(CommonErrorEnum.SYSTEM_ERROR.getCode(), CommonErrorEnum.SYSTEM_ERROR.getMsg());
     }
+
 
 }
