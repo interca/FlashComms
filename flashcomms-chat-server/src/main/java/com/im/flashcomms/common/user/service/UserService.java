@@ -3,7 +3,10 @@ package com.im.flashcomms.common.user.service;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
+import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,4 +40,12 @@ public interface UserService {
      * @param name
      */
     void modifyName(Long uid, String name);
+
+
+    /**
+     * 返回用户徽章
+     * @param uid
+     * @return
+     */
+    List<BadgeResp> badges(Long uid);
 }

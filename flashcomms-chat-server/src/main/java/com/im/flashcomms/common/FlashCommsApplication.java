@@ -27,7 +27,7 @@ public class FlashCommsApplication {
      * http重定向到https
      * @return
      */
-    @Bean
+   // @Bean
     public TomcatServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override

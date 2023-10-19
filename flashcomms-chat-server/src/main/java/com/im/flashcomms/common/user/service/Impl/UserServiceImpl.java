@@ -2,23 +2,26 @@ package com.im.flashcomms.common.user.service.Impl;
 
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
+import com.im.flashcomms.common.user.cache.ItemCache;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.dao.UserDao;
+import com.im.flashcomms.common.user.domain.entity.ItemConfig;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.entity.UserBackpack;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
-import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
+import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
+import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 import com.im.flashcomms.common.user.service.UserService;
 import com.im.flashcomms.common.user.service.adapter.UserAdapter;
-import io.netty.util.internal.StringUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import springfox.documentation.annotations.Cacheable;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,6 +32,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserBackpackDao userBackpackDao;
+
+
+    @Autowired
+    private ItemCache itemCache;
 
 
     /**
@@ -67,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public void modifyName(Long uid, String name) {
         User oldUser = userDao.getByName(name);
         if(Objects.nonNull(oldUser)){
-           throw  new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"用户名不能重复");
+           throw  new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"用户名已经被抢占");
         }
         UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, ItemEnum.MODIFY_NAME_CARD.getId());
         if(Objects.isNull(firstValidItem)){
@@ -78,5 +85,25 @@ public class UserServiceImpl implements UserService {
         if(b){
             userDao.modifyName(uid,name);
         }
+    }
+
+
+
+
+
+    /**
+     * 获取用户徽章
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<BadgeResp> badges(Long uid) {
+        //查询所有徽章
+        List<ItemConfig> itemConfigs = itemCache.getByType(ItemTypeEnum.BADGE.getType());
+        //查询用户的徽章
+        List<UserBackpack> backpacks = userBackpackDao.getByItemIds(uid, itemConfigs.stream().map(ItemConfig::getId).collect(Collectors.toList()));
+        //用户佩戴的
+        User user = userDao.getById(uid);
+        return UserAdapter.buildBadgeResp(itemConfigs,backpacks,user);
     }
 }

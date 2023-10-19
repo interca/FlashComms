@@ -28,11 +28,11 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 
-server:
-  ssl:
-    key-store: ${flashcomms.key-store}
-    key-store-password: ${flashcomms.key-store-password}
-    key-store-type: ${flashcomms.key-store-type}
+#server:
+#  ssl:
+#    key-store: ${flashcomms.key-store}
+#    key-store-password: ${flashcomms.key-store-password}
+#    key-store-type: ${flashcomms.key-store-type}
 
 wx:
   mp:

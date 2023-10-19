@@ -40,7 +40,7 @@ public class UserBackpack implements Serializable {
      * 物品id
      */
     @TableField("item_id")
-    private Integer itemId;
+    private Long itemId;
 
     /**
      * 使用状态 0.待使用 1已使用
