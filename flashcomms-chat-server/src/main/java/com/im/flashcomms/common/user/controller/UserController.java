@@ -5,8 +5,10 @@ import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
 import com.im.flashcomms.common.common.interceptor.TokenInterceptor;
 import com.im.flashcomms.common.common.utils.RequestHolder;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import com.im.flashcomms.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,16 +32,13 @@ import javax.servlet.http.HttpServletResponse;
 @Api(tags = "用户模块")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/userInfo")
     @ApiOperation(value = "获取用户信息")
-    public ApiResult<UserInfoResp> getUserInfo(HttpServletRequest request){
-        ApiResult<UserInfoResp> apiResult = new ApiResult<>();
-        apiResult.setErrCode(1);
-        apiResult.setErrMsg("hyj");
-        UserInfoResp userInfoResp = new UserInfoResp();
-        userInfoResp.setId(RequestHolder.get().getUid());
-        apiResult.setData(userInfoResp);
-        return apiResult;
+    public ApiResult<UserInfoResp> getUserInfo(){
+        return ApiResult.success(userService.getUserInfo(RequestHolder.get().getUid()));
     }
 }
 

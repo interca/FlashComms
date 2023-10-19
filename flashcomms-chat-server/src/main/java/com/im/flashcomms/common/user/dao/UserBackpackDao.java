@@ -1,5 +1,6 @@
 package com.im.flashcomms.common.user.dao;
 
+import com.im.flashcomms.common.common.domain.enums.YesOrNoEnum;
 import com.im.flashcomms.common.user.domain.entity.UserBackpack;
 import com.im.flashcomms.common.user.mapper.UserBackpackMapper;
 import com.im.flashcomms.common.user.service.IUserBackpackService;
@@ -17,4 +18,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpack>  {
 
+    /**
+     * 获取剩余的改名卡
+     * @param uid
+     * @param itemId
+     */
+    public Integer getCountByValidItemId(Long uid, Long itemId) {
+        Integer count = lambdaQuery()
+                .eq(UserBackpack::getUid, uid)
+                .eq(UserBackpack::getItemId, itemId)
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
+                .count();
+        return count;
+    }
 }
