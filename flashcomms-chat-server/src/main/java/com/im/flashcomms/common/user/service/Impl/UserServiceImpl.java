@@ -3,6 +3,7 @@ package com.im.flashcomms.common.user.service.Impl;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.user.cache.ItemCache;
+import com.im.flashcomms.common.user.dao.ItemConfigDao;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.ItemConfig;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ItemCache itemCache;
 
+
+    @Autowired
+    private ItemConfigDao itemConfigDao;
 
     /**
      * 用户注册
@@ -105,5 +109,20 @@ public class UserServiceImpl implements UserService {
         //用户佩戴的
         User user = userDao.getById(uid);
         return UserAdapter.buildBadgeResp(itemConfigs,backpacks,user);
+    }
+
+    @Override
+    public void wearingBadge(Long uid, Long itemId) {
+        //确保有徽章
+        UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, itemId);
+        if(firstValidItem == null){
+          throw new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"没有这个徽章");
+        }
+        //确保是徽章
+        ItemConfig itemConfig = itemConfigDao.getById(firstValidItem.getItemId());
+        if(itemConfig.getType() != 2){
+            throw new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"不是徽章");
+        }
+        userDao.wearingBadge(uid,itemId);
     }
 }

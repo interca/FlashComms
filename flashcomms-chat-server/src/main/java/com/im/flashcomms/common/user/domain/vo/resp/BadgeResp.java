@@ -15,7 +15,7 @@ public class BadgeResp {
     private Long id;
 
     @ApiModelProperty(value = "徽章图标")
-    private String avatar;
+    private String img;
 
     @ApiModelProperty(value = "徽章描述")
     private Integer describe;

@@ -48,4 +48,12 @@ public interface UserService {
      * @return
      */
     List<BadgeResp> badges(Long uid);
+
+    /**
+     * 佩戴徽章
+     * @param uid
+     * @param itemId
+     * @return
+     */
+    void wearingBadge(Long uid, Long itemId);
 }

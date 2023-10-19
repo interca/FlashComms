@@ -2,22 +2,17 @@ package com.im.flashcomms.common.user.controller;
 
 
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
-import com.im.flashcomms.common.common.interceptor.TokenInterceptor;
 import com.im.flashcomms.common.common.utils.RequestHolder;
 import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
 import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import com.im.flashcomms.common.user.domain.vo.req.WearingBadgeReq;
 import com.im.flashcomms.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -56,6 +51,13 @@ public class UserController {
     @ApiOperation("可选徽章预览")
     public ApiResult<List<BadgeResp>> badges(){
         return ApiResult.success(userService.badges(RequestHolder.get().getUid()));
+    }
+
+    @PutMapping("/bage")
+    @ApiOperation("佩戴勋章")
+    public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req){
+         userService.wearingBadge(RequestHolder.get().getUid(),req.getItemId());
+         return ApiResult.success();
     }
 }
 
