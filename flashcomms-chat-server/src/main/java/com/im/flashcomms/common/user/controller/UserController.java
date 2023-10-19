@@ -3,6 +3,7 @@ package com.im.flashcomms.common.user.controller;
 
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
 import com.im.flashcomms.common.common.interceptor.TokenInterceptor;
+import com.im.flashcomms.common.common.utils.RequestHolder;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,7 @@ public class UserController {
         apiResult.setErrCode(1);
         apiResult.setErrMsg("hyj");
         UserInfoResp userInfoResp = new UserInfoResp();
-        userInfoResp.setId((Long) request.getAttribute(TokenInterceptor.UID));
+        userInfoResp.setId(RequestHolder.get().getUid());
         apiResult.setData(userInfoResp);
         return apiResult;
     }
