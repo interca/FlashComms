@@ -1,5 +1,6 @@
 package com.im.flashcomms.common.user.service.Impl;
 
+import com.im.flashcomms.common.common.annotation.RedissonLock;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.user.cache.ItemCache;
@@ -75,6 +76,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @RedissonLock(key = "#uid")
     public void modifyName(Long uid, String name) {
         User oldUser = userDao.getByName(name);
         if(Objects.nonNull(oldUser)){
