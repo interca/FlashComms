@@ -3,7 +3,10 @@ package com.im.flashcomms.common;
 import com.im.flashcomms.common.common.Thread.MyUncaughtExceptionHandler;
 import com.im.flashcomms.common.common.config.ThreadPoolConfig;
 import com.im.flashcomms.common.common.utils.JwtUtils;
+import com.im.flashcomms.common.user.domain.enums.IdempotentEnum;
+import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.mapper.UserMapper;
+import com.im.flashcomms.common.user.service.IUserBackpackService;
 import com.im.flashcomms.common.user.service.LoginService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -40,6 +43,8 @@ public class test1 {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private IUserBackpackService iUserBackpackService;
 
     @Autowired
     @Qualifier(ThreadPoolConfig.FLASHCOMMS_EXECUTOR)
@@ -63,5 +68,12 @@ public class test1 {
     void test3() throws InterruptedException {
         String token = loginService.login(11001L);
         System.out.println(token);
+    }
+
+    @Test
+    void test4(){
+      iUserBackpackService.acquireItem(11001l, ItemEnum.MODIFY_NAME_CARD.getId(),IdempotentEnum.UID,
+              11001L + "");
+
     }
 }
