@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    @Transactional
     public Long  register(User insert) {
         boolean save = userDao.save(insert);
         //用户注册事件 发放改名卡

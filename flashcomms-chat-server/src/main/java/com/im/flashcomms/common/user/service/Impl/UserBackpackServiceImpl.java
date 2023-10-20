@@ -36,7 +36,6 @@ public class UserBackpackServiceImpl implements IUserBackpackService {
     @SneakyThrows
     @Override
     public void acquireItem(Long uid, Long itemId, IdempotentEnum idempotentEnum, String businessId) {
-        System.out.println(userBackpackDao);
         String idempotent = getIdempotent(itemId,idempotentEnum,businessId);
         service.doAcquireItem(uid,itemId,idempotent);
     }
