@@ -1,5 +1,6 @@
 package com.im.flashcomms.common.websocket.service;
 
+import com.im.flashcomms.common.websocket.domain.vo.resp.WSBaseResp;
 import io.netty.channel.Channel;
 import me.chanjar.weixin.common.error.WxErrorException;
 
@@ -46,4 +47,9 @@ public interface WebSocketService {
      * @param data
      */
     void authorize(Channel channel, String data);
+
+    /**
+     * 发消息给全部用户
+     */
+    void sendMsgToAll(WSBaseResp<?> wsBaseResp);
 }

@@ -1,6 +1,7 @@
 package com.im.flashcomms.common.user.service.Impl;
 
 import com.im.flashcomms.common.common.annotation.RedissonLock;
+import com.im.flashcomms.common.common.event.UserBlackEvent;
 import com.im.flashcomms.common.common.event.UserRegisterEvent;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
@@ -148,6 +149,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void black(BlackReq req) {
         Long uid = req.getUid();
         Black user = new Black();
@@ -158,6 +160,7 @@ public class UserServiceImpl implements UserService {
         //拉黑ip
         blackIp(byId.getIpInfo().getUpdateIp());
         blackIp(byId.getIpInfo().getCreateIp());
+        applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
     }
 
     private void blackIp(String ip) {

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class UserOnlineListener {
@@ -27,8 +28,9 @@ public class UserOnlineListener {
      * @param event
      */
     @Async
-    @EventListener(classes = UserOnlineEvent.class)
+    @TransactionalEventListener (classes = UserOnlineEvent.class)
     public void saveDb(UserOnlineEvent event){
+        System.out.println("1111111");
         User user = event.getUser();
         User update = new User();
         update.setLastOptTime(user.getLastOptTime());

@@ -27,6 +27,7 @@ import org.apache.tomcat.websocket.WsRemoteEndpointAsync;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -56,6 +57,12 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
     private IRoleService roleService;
+
+
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+
 
     private final static int  MAXIMUM_SIZE = 1000;
 
@@ -161,6 +168,15 @@ public class WebSocketServiceImpl implements WebSocketService {
             //告诉前端要去除token
             sendMsg(channel,WebSocketAdapter.buildInvalidTokenResp());
         }
+    }
+
+    @Override
+    public void sendMsgToAll(WSBaseResp<?> wsBaseResp) {
+        ONLINE_WS_MAP.forEach((channel, wsChannelExtraDTO) -> {
+            threadPoolTaskExecutor.execute(()->{
+                 sendMsg(channel,wsBaseResp);
+            });
+        });
     }
 
     /**

@@ -3,6 +3,7 @@ package com.im.flashcomms.common.websocket.service.adapter;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.websocket.domain.enums.WSRespTypeEnum;
 import com.im.flashcomms.common.websocket.domain.vo.resp.WSBaseResp;
+import com.im.flashcomms.common.websocket.domain.vo.resp.WSBlack;
 import com.im.flashcomms.common.websocket.domain.vo.resp.WSLoginSuccess;
 import com.im.flashcomms.common.websocket.domain.vo.resp.WSLoginUrl;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
@@ -56,6 +57,16 @@ public class WebSocketAdapter {
                 .uid(user.getId())
                 //看是不是管理员
                 .power(hasPower?1:0)
+                .build();
+        resp.setData(wsLoginSuccess);
+        return resp;
+    }
+
+    public static WSBaseResp<?> buildBlack(User user) {
+        WSBaseResp<WSBlack> resp = new WSBaseResp<>();
+        resp.setType(WSRespTypeEnum.BLACK.getType());
+        WSBlack wsLoginSuccess = WSBlack.builder()
+                .uid(user.getId())
                 .build();
         resp.setData(wsLoginSuccess);
         return resp;
