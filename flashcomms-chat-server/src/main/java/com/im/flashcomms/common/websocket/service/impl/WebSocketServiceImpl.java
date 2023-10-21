@@ -25,6 +25,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.tomcat.websocket.WsRemoteEndpointAsync;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -34,6 +35,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.im.flashcomms.common.common.config.ThreadPoolConfig.WS_EXECUTOR;
 
 
 /**
@@ -60,6 +63,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 
 
     @Autowired
+    @Qualifier(WS_EXECUTOR)
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
 

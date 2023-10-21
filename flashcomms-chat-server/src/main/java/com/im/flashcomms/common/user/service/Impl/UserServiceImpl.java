@@ -10,10 +10,7 @@ import com.im.flashcomms.common.user.dao.BlackDao;
 import com.im.flashcomms.common.user.dao.ItemConfigDao;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.dao.UserDao;
-import com.im.flashcomms.common.user.domain.entity.Black;
-import com.im.flashcomms.common.user.domain.entity.ItemConfig;
-import com.im.flashcomms.common.user.domain.entity.User;
-import com.im.flashcomms.common.user.domain.entity.UserBackpack;
+import com.im.flashcomms.common.user.domain.entity.*;
 import com.im.flashcomms.common.user.domain.enums.BlackTypeEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
@@ -33,6 +30,7 @@ import springfox.documentation.annotations.Cacheable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -158,8 +156,9 @@ public class UserServiceImpl implements UserService {
         blackDao.save(user);
         User byId = userDao.getById(uid);
         //拉黑ip
-        blackIp(byId.getIpInfo().getUpdateIp());
-        blackIp(byId.getIpInfo().getCreateIp());
+        blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getCreateIp).orElse(null));
+        blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getUpdateIp).orElse(null));
+        System.out.println("1");
         applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
     }
 

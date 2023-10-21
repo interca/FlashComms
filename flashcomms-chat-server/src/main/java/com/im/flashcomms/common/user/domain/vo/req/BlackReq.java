@@ -10,6 +10,5 @@ import javax.validation.constraints.NotBlank;
 public class BlackReq {
 
     @ApiModelProperty("用户uid")
-    @NotBlank
     private Long uid;
 }

@@ -66,14 +66,14 @@ public class test1 {
 
     @Test
     void test3() throws InterruptedException {
-        String token = loginService.login(11001L);
+        String token = loginService.login(11006L);
         System.out.println(token);
     }
 
     @Test
     void test4(){
       iUserBackpackService.acquireItem(11001l, ItemEnum.MODIFY_NAME_CARD.getId(),IdempotentEnum.UID,
-              11001L + "");
+              11006L + "");
 
     }
 }
