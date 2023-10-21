@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
     public Long  register(User insert) {
         boolean save = userDao.save(insert);
         //用户注册事件 发放改名卡
+        System.out.println("改名卡1");
         //发布事件
         applicationEventPublisher.publishEvent(new UserRegisterEvent(this,insert));
         return insert.getId();

@@ -4,7 +4,11 @@ import cn.hutool.core.net.url.UrlBuilder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.Optional;
 
 
@@ -28,6 +32,15 @@ public class MyHandShakeHandler extends ChannelInboundHandlerAdapter {
                //替换成不带参数的路径
                request.setUri(urlBuilder.getPath().toString());
           }
+          //获取用户Ip
+           String ip = request.headers().get("X-Real-IP");
+           if(StringUtils.isBlank(ip)){
+               InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+               ip = address.getAddress().getHostAddress();
+           }
+           //保存在channel附件
+           NettyUtil.setAttr(ctx.channel(),NettyUtil.IP,ip);
+           ctx.pipeline().remove(this);
        }
        ctx.fireChannelRead(msg);
     }

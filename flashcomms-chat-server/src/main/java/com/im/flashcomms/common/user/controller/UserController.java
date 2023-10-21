@@ -54,10 +54,10 @@ public class UserController {
         return ApiResult.success(userService.badges(RequestHolder.get().getUid()));
     }
 
-    @PutMapping("/bage")
+    @PutMapping("/badge")
     @ApiOperation("佩戴勋章")
     public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req){
-         userService.wearingBadge(RequestHolder.get().getUid(),req.getItemId());
+         userService.wearingBadge(RequestHolder.get().getUid(),req.getBadgeId());
          return ApiResult.success();
     }
 }

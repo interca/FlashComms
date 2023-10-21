@@ -5,15 +5,11 @@ import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.enums.IdempotentEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
-import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
 import com.im.flashcomms.common.user.service.IUserBackpackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * 用户事件监听
@@ -33,7 +29,7 @@ public class UserRegisterListener {
      * @param event
      */
     @Async
-    @TransactionalEventListener(classes = UserRegisterEvent.class,phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener(classes = UserRegisterEvent.class)
     public void sendCard(UserRegisterEvent event){
         User user = event.getUser();
         userBackpackService.acquireItem(user.getId(), ItemEnum.MODIFY_NAME_CARD.getId(), IdempotentEnum.UID,
@@ -46,7 +42,7 @@ public class UserRegisterListener {
      * @param event
      */
     @Async
-    @TransactionalEventListener(classes = UserRegisterEvent.class,phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener(classes = UserRegisterEvent.class)
     public void sendBadge(UserRegisterEvent event){
         User user = event.getUser();
         //前100名给一个徽章

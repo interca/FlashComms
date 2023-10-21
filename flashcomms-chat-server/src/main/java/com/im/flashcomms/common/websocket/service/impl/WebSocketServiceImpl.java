@@ -4,9 +4,11 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.im.flashcomms.common.common.event.UserOnlineEvent;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.service.LoginService;
+import com.im.flashcomms.common.websocket.NettyUtil;
 import com.im.flashcomms.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.im.flashcomms.common.websocket.domain.enums.WSRespTypeEnum;
 import com.im.flashcomms.common.websocket.domain.vo.resp.WSBaseResp;
@@ -21,10 +23,12 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.tomcat.websocket.WsRemoteEndpointAsync;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,6 +48,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private final static int  MAXIMUM_SIZE = 1000;
 
@@ -161,8 +168,11 @@ public class WebSocketServiceImpl implements WebSocketService {
         //保存channel对应的uid
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
-        //用户上线成功的事件
         sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+        user.setLastOptTime(LocalDateTime.now());
+        user.refreshIp(NettyUtil.getAttr(channel,NettyUtil.IP));
+        //发布用户上线成功的事件
+        applicationEventPublisher.publishEvent(new UserOnlineEvent(this,user));
     }
 
 
