@@ -3,6 +3,7 @@ package com.im.flashcomms.common.user.service.Impl;
 import cn.hutool.core.thread.NamedThreadFactory;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
+import com.im.flashcomms.common.common.domain.dto.IpInfo2;
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.IpDetail;
@@ -78,8 +79,8 @@ public class IpServiceImpl implements IpService {
     private IpDetail getIpDetailOrNUll(String ip) {
         String url =  "https://ip.taobao.com/outGetIpInfo?ip="+ip+"&accessKey=alibaba-inc";
         String s = HttpUtil.get(url);
-        ApiResult apiResult = JSONUtil.toBean(s, ApiResult.class);
-        IpDetail ipDetail  = (IpDetail) apiResult.getData();
+        IpInfo2 apiResult = JSONUtil.toBean(s, IpInfo2.class);
+        IpDetail ipDetail = apiResult.getData();
         return ipDetail;
     }
 }
