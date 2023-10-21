@@ -45,4 +45,19 @@ public class WebSocketAdapter {
         resp.setType(WSRespTypeEnum.INVALIDATE_TOKEN.getType());
         return resp;
     }
+
+    public static WSBaseResp<?> buildResp(User user, String token, boolean hasPower) {
+        WSBaseResp<WSLoginSuccess> resp = new WSBaseResp<>();
+        resp.setType(WSRespTypeEnum.LOGIN_SUCCESS.getType());
+        WSLoginSuccess wsLoginSuccess = WSLoginSuccess.builder()
+                .avatar(user.getAvatar())
+                .name(user.getName())
+                .token(token)
+                .uid(user.getId())
+                //看是不是管理员
+                .power(hasPower?1:0)
+                .build();
+        resp.setData(wsLoginSuccess);
+        return resp;
+    }
 }

@@ -7,6 +7,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.im.flashcomms.common.common.event.UserOnlineEvent;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
+import com.im.flashcomms.common.user.domain.enums.RoleEnum;
+import com.im.flashcomms.common.user.service.IRoleService;
 import com.im.flashcomms.common.user.service.LoginService;
 import com.im.flashcomms.common.websocket.NettyUtil;
 import com.im.flashcomms.common.websocket.domain.dto.WSChannelExtraDTO;
@@ -51,6 +53,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private IRoleService roleService;
 
     private final static int  MAXIMUM_SIZE = 1000;
 
@@ -168,7 +173,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         //保存channel对应的uid
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
-        sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+        sendMsg(channel,WebSocketAdapter.buildResp(user,token,roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGER)));
         user.setLastOptTime(LocalDateTime.now());
         user.refreshIp(NettyUtil.getAttr(channel,NettyUtil.IP));
         //发布用户上线成功的事件

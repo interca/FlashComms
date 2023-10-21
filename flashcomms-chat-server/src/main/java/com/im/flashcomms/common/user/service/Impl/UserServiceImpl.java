@@ -5,24 +5,31 @@ import com.im.flashcomms.common.common.event.UserRegisterEvent;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.user.cache.ItemCache;
+import com.im.flashcomms.common.user.dao.BlackDao;
 import com.im.flashcomms.common.user.dao.ItemConfigDao;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.dao.UserDao;
+import com.im.flashcomms.common.user.domain.entity.Black;
 import com.im.flashcomms.common.user.domain.entity.ItemConfig;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.entity.UserBackpack;
+import com.im.flashcomms.common.user.domain.enums.BlackTypeEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
+import com.im.flashcomms.common.user.domain.vo.req.BlackReq;
 import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 import com.im.flashcomms.common.user.service.UserService;
 import com.im.flashcomms.common.user.service.adapter.UserAdapter;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springfox.documentation.annotations.Cacheable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,6 +55,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+
+
+    @Autowired
+    private BlackDao blackDao;
 
     /**
      * 用户注册
@@ -134,5 +145,28 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"不是徽章");
         }
         userDao.wearingBadge(uid,itemId);
+    }
+
+    @Override
+    public void black(BlackReq req) {
+        Long uid = req.getUid();
+        Black user = new Black();
+        user.setType(BlackTypeEnum.UID.getType());
+        user.setTarget(uid.toString());
+        blackDao.save(user);
+        User byId = userDao.getById(uid);
+        //拉黑ip
+        blackIp(byId.getIpInfo().getUpdateIp());
+        blackIp(byId.getIpInfo().getCreateIp());
+    }
+
+    private void blackIp(String ip) {
+        if(StringUtils.isBlank(ip)){
+            return;
+        }
+        Black user = new Black();
+        user.setType(BlackTypeEnum.IP.getType());
+        user.setTarget(ip);
+        blackDao.save(user);
     }
 }

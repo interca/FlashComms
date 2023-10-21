@@ -3,11 +3,16 @@ package com.im.flashcomms.common.user.controller;
 
 import com.im.flashcomms.common.common.annotation.RedissonLock;
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
+import com.im.flashcomms.common.common.exception.BusinessException;
+import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.common.utils.RequestHolder;
+import com.im.flashcomms.common.user.domain.enums.RoleEnum;
+import com.im.flashcomms.common.user.domain.vo.req.BlackReq;
 import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
 import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 import com.im.flashcomms.common.user.domain.vo.req.WearingBadgeReq;
+import com.im.flashcomms.common.user.service.IRoleService;
 import com.im.flashcomms.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +39,9 @@ public class UserController {
     private UserService userService;
 
 
+    @Autowired
+    private IRoleService iRoleService;
+
     @GetMapping("/userInfo")
     @ApiOperation(value = "获取用户信息")
     public ApiResult<UserInfoResp> getUserInfo(){
@@ -59,6 +67,19 @@ public class UserController {
     public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req){
          userService.wearingBadge(RequestHolder.get().getUid(),req.getBadgeId());
          return ApiResult.success();
+    }
+
+
+    @PutMapping("/black")
+    @ApiOperation("拉黑")
+    public ApiResult<Void> wearingBadge(@Valid @RequestBody BlackReq req){
+        Long uid = RequestHolder.get().getUid();
+        boolean b = iRoleService.hasPower(uid, RoleEnum.ADMIN);
+        if(!b){
+            throw new  BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"没权限");
+        }
+        userService.black(req);
+        return ApiResult.success();
     }
 }
 
