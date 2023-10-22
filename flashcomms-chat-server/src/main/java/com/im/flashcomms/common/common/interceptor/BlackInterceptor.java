@@ -32,7 +32,7 @@ public class BlackInterceptor implements HandlerInterceptor {
         RequestInfo requestInfo = RequestHolder.get();
         Boolean inBlackList = inBlackList(requestInfo.getUid(), blackMap.get(BlackTypeEnum.UID.getType()));
         Boolean inBlackList1 = inBlackList(requestInfo.getIp(), blackMap.get(BlackTypeEnum.IP.getType()));
-        if(!inBlackList1 || !inBlackList){
+        if(inBlackList1 || inBlackList){
             HttpErrorEnum.ACCESS_DENIED.sendHttpError(response);
             return false;
         }
