@@ -19,15 +19,11 @@ import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
 import com.im.flashcomms.common.user.service.UserService;
 import com.im.flashcomms.common.user.service.adapter.UserAdapter;
-import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.annotations.Cacheable;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -158,7 +154,6 @@ public class UserServiceImpl implements UserService {
         //拉黑ip
         blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getCreateIp).orElse(null));
         blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getUpdateIp).orElse(null));
-        System.out.println("1");
         applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
     }
 

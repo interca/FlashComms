@@ -2,6 +2,7 @@ package com.im.flashcomms.common.common.event.listener;
 
 import com.im.flashcomms.common.common.event.UserBlackEvent;
 import com.im.flashcomms.common.common.event.UserRegisterEvent;
+import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.enums.IdempotentEnum;
@@ -29,6 +30,9 @@ public class UserBlackListener {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserCache userCache;
+
     /**
      *
      * @param event
@@ -49,6 +53,17 @@ public class UserBlackListener {
     @TransactionalEventListener(classes = UserBlackEvent.class,phase = TransactionPhase.AFTER_COMMIT)
     public void changeUserStatus(UserBlackEvent event){
         userDao.invalidUid(event.getUser().getId());
+    }
+
+
+    /**
+     * 清空缓存
+     * @param event
+     */
+    @Async
+    @TransactionalEventListener(classes = UserBlackEvent.class,phase = TransactionPhase.AFTER_COMMIT)
+    public void evictCache(UserBlackEvent event){
+        userCache.evictBlackMap();
     }
 
 }
