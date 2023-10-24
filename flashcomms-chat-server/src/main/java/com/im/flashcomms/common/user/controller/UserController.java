@@ -1,17 +1,17 @@
 package com.im.flashcomms.common.user.controller;
 
 
-import com.im.flashcomms.common.common.annotation.RedissonLock;
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
+import com.im.flashcomms.common.common.exception.BusinessErrorEnum;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.common.utils.RequestHolder;
 import com.im.flashcomms.common.user.domain.enums.RoleEnum;
-import com.im.flashcomms.common.user.domain.vo.req.BlackReq;
-import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
-import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
-import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
-import com.im.flashcomms.common.user.domain.vo.req.WearingBadgeReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.BlackReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.ModifyNameReq;
+import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
+import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
+import com.im.flashcomms.common.user.domain.vo.req.user.WearingBadgeReq;
 import com.im.flashcomms.common.user.service.IRoleService;
 import com.im.flashcomms.common.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -76,7 +76,7 @@ public class UserController {
         Long uid = RequestHolder.get().getUid();
         boolean b = iRoleService.hasPower(uid, RoleEnum.ADMIN);
         if(!b){
-            throw new  BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"没权限");
+            throw new  BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"没权限");
         }
         userService.black(req);
         return ApiResult.success();

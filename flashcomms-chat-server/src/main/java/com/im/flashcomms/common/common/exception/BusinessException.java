@@ -14,4 +14,7 @@ public class BusinessException extends RuntimeException{
     protected  Integer errorCode;
 
     protected String errorMsg;
+
+    public BusinessException(String s) {
+    }
 }

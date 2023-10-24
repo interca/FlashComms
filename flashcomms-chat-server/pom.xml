@@ -44,6 +44,17 @@
             <artifactId>java-jwt</artifactId>
             <version>3.19.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.knuddels</groupId>
+            <artifactId>jtokkit</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>

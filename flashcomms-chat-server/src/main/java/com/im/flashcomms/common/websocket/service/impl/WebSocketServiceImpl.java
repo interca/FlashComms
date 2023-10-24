@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -194,7 +195,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
         sendMsg(channel,WebSocketAdapter.buildResp(user,token,roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGER)));
-        user.setLastOptTime(LocalDateTime.now());
+        user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel,NettyUtil.IP));
         //发布用户上线成功的事件
         applicationEventPublisher.publishEvent(new UserOnlineEvent(this,user));

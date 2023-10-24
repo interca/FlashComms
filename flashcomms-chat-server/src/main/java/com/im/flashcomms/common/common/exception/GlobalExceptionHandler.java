@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(x -> errorMsg.append(x.getField())
                 .append(x.getDefaultMessage()).append(","));
         String s = errorMsg.toString();
-        return ApiResult.fail(CommonErrorEnum.PARAM_INVALID.getCode(), s.substring(0,s.length() - 1));
+        return ApiResult.fail(CommonErrorEnum.PARAM_VALID.getCode(), s.substring(0,s.length() - 1));
     }
 
 

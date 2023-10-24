@@ -1,11 +1,9 @@
 package com.im.flashcomms.common.user.service;
 
 import com.im.flashcomms.common.user.domain.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.im.flashcomms.common.user.domain.vo.req.BlackReq;
-import com.im.flashcomms.common.user.domain.vo.req.ModifyNameReq;
-import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
-import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import com.im.flashcomms.common.user.domain.vo.req.user.BlackReq;
+import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
+import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
 
 import java.util.List;
 

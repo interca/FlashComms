@@ -3,6 +3,7 @@ package com.im.flashcomms.common.user.service.Impl;
 import com.im.flashcomms.common.common.annotation.RedissonLock;
 import com.im.flashcomms.common.common.event.UserBlackEvent;
 import com.im.flashcomms.common.common.event.UserRegisterEvent;
+import com.im.flashcomms.common.common.exception.BusinessErrorEnum;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.user.cache.ItemCache;
@@ -14,9 +15,9 @@ import com.im.flashcomms.common.user.domain.entity.*;
 import com.im.flashcomms.common.user.domain.enums.BlackTypeEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
-import com.im.flashcomms.common.user.domain.vo.req.BlackReq;
-import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
-import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import com.im.flashcomms.common.user.domain.vo.req.user.BlackReq;
+import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
+import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
 import com.im.flashcomms.common.user.service.UserService;
 import com.im.flashcomms.common.user.service.adapter.UserAdapter;
 import org.apache.commons.lang3.StringUtils;
@@ -94,11 +95,11 @@ public class UserServiceImpl implements UserService {
     public void modifyName(Long uid, String name) {
         User oldUser = userDao.getByName(name);
         if(Objects.nonNull(oldUser)){
-           throw  new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"用户名已经被抢占");
+           throw  new BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"用户名已经被抢占");
         }
         UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, ItemEnum.MODIFY_NAME_CARD.getId());
         if(Objects.isNull(firstValidItem)){
-            throw  new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"改名卡不够了");
+            throw  new BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"改名卡不够了");
         }
         //使用改名卡
         boolean b = userBackpackDao.userItem(firstValidItem);
@@ -132,12 +133,12 @@ public class UserServiceImpl implements UserService {
         //确保有徽章
         UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, itemId);
         if(firstValidItem == null){
-          throw new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"没有这个徽章");
+          throw new BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"没有这个徽章");
         }
         //确保是徽章
         ItemConfig itemConfig = itemConfigDao.getById(firstValidItem.getItemId());
         if(itemConfig.getType() != 2){
-            throw new BusinessException(CommonErrorEnum.BUSINESS_ERROR.getCode(),"不是徽章");
+            throw new BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"不是徽章");
         }
         userDao.wearingBadge(uid,itemId);
     }

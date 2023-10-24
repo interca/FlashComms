@@ -80,6 +80,11 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

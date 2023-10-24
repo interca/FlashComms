@@ -4,8 +4,8 @@ import com.im.flashcomms.common.common.domain.enums.YesOrNoEnum;
 import com.im.flashcomms.common.user.domain.entity.ItemConfig;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.entity.UserBackpack;
-import com.im.flashcomms.common.user.domain.vo.resp.BadgeResp;
-import com.im.flashcomms.common.user.domain.vo.resp.UserInfoResp;
+import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
+import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.springframework.beans.BeanUtils;
 
