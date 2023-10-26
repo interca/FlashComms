@@ -7,15 +7,21 @@ import com.im.flashcomms.common.common.exception.BusinessErrorEnum;
 import com.im.flashcomms.common.common.exception.BusinessException;
 import com.im.flashcomms.common.common.exception.CommonErrorEnum;
 import com.im.flashcomms.common.user.cache.ItemCache;
+import com.im.flashcomms.common.user.cache.UserCache;
+import com.im.flashcomms.common.user.cache.UserSummaryCache;
 import com.im.flashcomms.common.user.dao.BlackDao;
 import com.im.flashcomms.common.user.dao.ItemConfigDao;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.dao.UserDao;
+import com.im.flashcomms.common.user.domain.dto.ItemInfoDTO;
+import com.im.flashcomms.common.user.domain.dto.SummeryInfoDTO;
 import com.im.flashcomms.common.user.domain.entity.*;
 import com.im.flashcomms.common.user.domain.enums.BlackTypeEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemTypeEnum;
 import com.im.flashcomms.common.user.domain.vo.req.user.BlackReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.ItemInfoReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.SummeryInfoReq;
 import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
 import com.im.flashcomms.common.user.service.UserService;
@@ -25,9 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +60,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BlackDao blackDao;
+
+    @Autowired
+    private UserCache userCache;
+
+    @Autowired
+    private UserSummaryCache userSummaryCache;
 
     /**
      * 用户注册
@@ -158,6 +169,48 @@ public class UserServiceImpl implements UserService {
         applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
     }
 
+
+    @Override
+    public List<SummeryInfoDTO> getSummeryUserInfo(SummeryInfoReq req) {
+        //需要前端同步的uid
+        List<Long> uidList = getNeedSyncUidList(req.getReqList());
+        //加载用户信息
+        Map<Long, SummeryInfoDTO> batch = userSummaryCache.getBatch(uidList);
+        return req.getReqList()
+                .stream()
+                .map(a -> batch.containsKey(a.getUid()) ? batch.get(a.getUid()) : SummeryInfoDTO.skip(a.getUid()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemInfoDTO> getItemInfo(ItemInfoReq req) {//简单做，更新时间可判断被修改
+        return req.getReqList().stream().map(a -> {
+            ItemConfig itemConfig = itemCache.getById(a.getItemId());
+            if (Objects.nonNull(a.getLastModifyTime()) && a.getLastModifyTime() >= itemConfig.getUpdateTime().getTime()) {
+                return ItemInfoDTO.skip(a.getItemId());
+            }
+            ItemInfoDTO dto = new ItemInfoDTO();
+            dto.setItemId(itemConfig.getId());
+            dto.setImg(itemConfig.getImg());
+            dto.setDescribe(itemConfig.getDescribe());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+
+    private List<Long> getNeedSyncUidList(List<SummeryInfoReq.infoReq> reqList) {
+        List<Long> needSyncUidList = new ArrayList<>();
+        List<Long> userModifyTime = userCache.getUserModifyTime(reqList.stream().map(SummeryInfoReq.infoReq::getUid).collect(Collectors.toList()));
+        for (int i = 0; i < reqList.size(); i++) {
+            SummeryInfoReq.infoReq infoReq = reqList.get(i);
+            Long modifyTime = userModifyTime.get(i);
+            if (Objects.isNull(infoReq.getLastModifyTime()) || (Objects.nonNull(modifyTime) && modifyTime > infoReq.getLastModifyTime())) {
+                needSyncUidList.add(infoReq.getUid());
+            }
+        }
+        return needSyncUidList;
+    }
     private void blackIp(String ip) {
         if(StringUtils.isBlank(ip)){
             return;

@@ -1,7 +1,11 @@
 package com.im.flashcomms.common.user.service;
 
+import com.im.flashcomms.common.user.domain.dto.ItemInfoDTO;
+import com.im.flashcomms.common.user.domain.dto.SummeryInfoDTO;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.vo.req.user.BlackReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.ItemInfoReq;
+import com.im.flashcomms.common.user.domain.vo.req.user.SummeryInfoReq;
 import com.im.flashcomms.common.user.domain.vo.resp.user.BadgeResp;
 import com.im.flashcomms.common.user.domain.vo.resp.user.UserInfoResp;
 
@@ -61,4 +65,16 @@ public interface UserService {
      * @param req
      */
     void black(BlackReq req);
+
+
+    /**
+     * 获取用户汇总信息
+     *
+     * @param req
+     * @return
+     */
+    List<SummeryInfoDTO> getSummeryUserInfo(SummeryInfoReq req);
+
+    List<ItemInfoDTO> getItemInfo(ItemInfoReq req);
+
 }

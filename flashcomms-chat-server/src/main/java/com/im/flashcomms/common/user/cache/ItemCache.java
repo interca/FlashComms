@@ -17,9 +17,13 @@ public class ItemCache {
     @Autowired
     private ItemConfigDao itemConfigDao;
 
-    //获取缓存
-    @Cacheable(cacheNames =  "item",key = "'itemsByType:'+#itemType")
-    public List<ItemConfig> getByType(Integer itemType){
-       return  itemConfigDao.getByType(itemType);
+    @Cacheable(cacheNames = "item", key = "'itemsByType:'+#type")
+    public List<ItemConfig> getByType(Integer type) {
+        return itemConfigDao.getByType(type);
+    }
+
+    @Cacheable(cacheNames = "item", key = "'item:'+#itemId")
+    public ItemConfig getById(Long itemId) {
+        return itemConfigDao.getById(itemId);
     }
 }

@@ -30,7 +30,6 @@ public class UserOnlineListener {
     @Async
     @TransactionalEventListener (classes = UserOnlineEvent.class)
     public void saveDb(UserOnlineEvent event){
-        System.out.println("1111111");
         User user = event.getUser();
         User update = new User();
         update.setLastOptTime(user.getLastOptTime());
