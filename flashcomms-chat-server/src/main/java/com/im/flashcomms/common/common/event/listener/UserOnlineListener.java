@@ -2,6 +2,7 @@ package com.im.flashcomms.common.common.event.listener;
 
 import com.im.flashcomms.common.common.event.UserOnlineEvent;
 import com.im.flashcomms.common.common.event.UserRegisterEvent;
+import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.enums.IdempotentEnum;
@@ -23,6 +24,9 @@ public class UserOnlineListener {
     @Autowired
     private IpService ipService;
 
+    @Autowired
+    private UserCache userCache;
+
     /**
      * 在事物结束后才执行
      * @param event
@@ -40,6 +44,6 @@ public class UserOnlineListener {
         userDao.updateById(update);
         //用户ip详情解析
         ipService.refreshIpDetailAsync(user.getId());
-
+        userCache.userInfoChange(user.getId());
     }
 }

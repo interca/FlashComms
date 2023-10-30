@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService {
         boolean b = userBackpackDao.userItem(firstValidItem);
         if(b){
             userDao.modifyName(uid,name);
+            userCache.userInfoChange(uid);
         }
     }
 
@@ -152,6 +153,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(BusinessErrorEnum.BUSINESS_ERROR.getCode(),"不是徽章");
         }
         userDao.wearingBadge(uid,itemId);
+        userCache.userInfoChange(uid);
     }
 
     @Override

@@ -66,6 +66,7 @@ public class WxPortalController {
         WxOAuth2UserInfo userInfo = wxService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
         System.out.println(userInfo);
         wxMsgService.authorize(userInfo);
+        System.out.println("ssss");
         RedirectView redirectView  =new RedirectView();
         redirectView.setUrl("https://leetcode.cn/u/hong-shen-2/");
         return redirectView;
