@@ -1,6 +1,7 @@
 package com.im.flashcomms.common.common.config;
 
 import com.im.flashcomms.common.common.Thread.MyThreadFactory;
+import com.im.flashcomms.transaction.annotation.SecureInvokeConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -17,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableAsync
-public class ThreadPoolConfig implements AsyncConfigurer {
+public class ThreadPoolConfig implements AsyncConfigurer, SecureInvokeConfigurer {
     /**
      * 项目共用线程池
      */
@@ -35,6 +36,13 @@ public class ThreadPoolConfig implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         return mallchatExecutor();
     }
+
+    @Override
+    public Executor getSecureInvokeExecutor() {
+        return mallchatExecutor();
+    }
+
+
 
     @Bean(FLASHCOMMS_EXECUTOR)
     @Primary

@@ -2,6 +2,7 @@ package com.im.flashcomms.common.chat.controller;
 
 
 import com.im.flashcomms.common.chat.domain.dto.MsgReadInfoDTO;
+import com.im.flashcomms.common.chat.domain.entity.Message;
 import com.im.flashcomms.common.chat.domain.vo.request.*;
 import com.im.flashcomms.common.chat.domain.vo.response.ChatMessageReadResp;
 import com.im.flashcomms.common.chat.domain.vo.response.ChatMessageResp;
@@ -9,6 +10,7 @@ import com.im.flashcomms.common.chat.service.ChatService;
 import com.im.flashcomms.common.common.annotation.FrequencyControl;
 import com.im.flashcomms.common.common.domain.vo.resp.ApiResult;
 import com.im.flashcomms.common.common.domain.vo.resp.CursorPageBaseResp;
+import com.im.flashcomms.common.common.domain.vo.resp.IdRespVO;
 import com.im.flashcomms.common.common.utils.RequestHolder;
 import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.domain.enums.BlackTypeEnum;
@@ -16,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
