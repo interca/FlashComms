@@ -1,10 +1,12 @@
 package com.im.flashcomms.transaction.service;
 
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.im.flashcomms.transaction.annotation.SecureInvoke;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 
 
 /**
@@ -32,6 +34,7 @@ public class MQProducer {
      */
     @SecureInvoke
     public void sendSecureMsg(String exchange, Object body,String key) {
+        System.out.println("sss");
         rabbitTemplate.convertAndSend(exchange,key,body);
     }
 }
