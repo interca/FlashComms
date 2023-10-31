@@ -3,7 +3,7 @@ package com.im.flashcomms.common.common.aspect;
 import cn.hutool.core.util.StrUtil;
 import com.im.flashcomms.common.common.annotation.RedissonLock;
 import com.im.flashcomms.common.common.service.LockService;
-import com.im.flashcomms.common.common.utils.SpElUtils;
+import com.im.flashcomms.utils.SpElUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

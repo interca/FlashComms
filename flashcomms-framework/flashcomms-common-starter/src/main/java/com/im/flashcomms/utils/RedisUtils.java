@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.utils;
+package com.im.flashcomms.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;

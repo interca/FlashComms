@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.utils;
+package com.im.flashcomms.utils;
 
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;

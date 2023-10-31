@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.cache;
+package com.im.flashcomms.common.common.algorithm.cache;
 
 import java.util.List;
 import java.util.Map;

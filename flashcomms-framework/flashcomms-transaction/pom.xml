@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>flashcomms-transaction</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.im</groupId>
+            <artifactId>flashcomms-common-starter</artifactId>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

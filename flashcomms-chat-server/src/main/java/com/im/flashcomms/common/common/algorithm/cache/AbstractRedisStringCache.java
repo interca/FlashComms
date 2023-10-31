@@ -1,8 +1,8 @@
-package com.im.flashcomms.common.common.cache;
+package com.im.flashcomms.common.common.algorithm.cache;
 
 import cn.hutool.core.collection.CollectionUtil;
 
-import com.im.flashcomms.common.common.utils.RedisUtils;
+import com.im.flashcomms.utils.RedisUtils;
 import org.springframework.data.util.Pair;
 
 import java.lang.reflect.ParameterizedType;

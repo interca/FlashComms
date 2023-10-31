@@ -1,11 +1,11 @@
 package com.im.flashcomms.transaction.domain.entity;
 
-import com.abin.mallchat.transaction.domain.dto.SecureInvokeDTO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.im.flashcomms.transaction.domain.dto.SecureInvokeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

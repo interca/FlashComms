@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.utils;
+package com.im.flashcomms.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -2,7 +2,7 @@ package com.im.flashcomms.common.common.service.frequencycontrol;
 
 
 import com.im.flashcomms.common.common.domain.dto.FrequencyControlDTO;
-import com.im.flashcomms.common.common.utils.RedisUtils;
+import com.im.flashcomms.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

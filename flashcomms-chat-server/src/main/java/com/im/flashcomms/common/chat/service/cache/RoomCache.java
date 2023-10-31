@@ -3,7 +3,7 @@ package com.im.flashcomms.common.chat.service.cache;
 import com.im.flashcomms.common.chat.dao.RoomDao;
 import com.im.flashcomms.common.chat.dao.RoomFriendDao;
 import com.im.flashcomms.common.chat.domain.entity.Room;
-import com.im.flashcomms.common.common.cache.AbstractRedisStringCache;
+import com.im.flashcomms.common.common.algorithm.cache.AbstractRedisStringCache;
 import com.im.flashcomms.common.common.constant.RedisKey;
 import com.im.flashcomms.common.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;

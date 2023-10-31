@@ -1,6 +1,6 @@
 package com.im.flashcomms.common.user.cache;
 
-import com.im.flashcomms.common.common.cache.AbstractRedisStringCache;
+import com.im.flashcomms.common.common.algorithm.cache.AbstractRedisStringCache;
 import com.im.flashcomms.common.common.constant.RedisKey;
 import com.im.flashcomms.common.user.dao.UserBackpackDao;
 import com.im.flashcomms.common.user.domain.dto.SummeryInfoDTO;

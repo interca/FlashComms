@@ -1,38 +1,37 @@
 package com.im.flashcomms.transaction.service;
 
-import com.abin.mallchat.transaction.annotation.SecureInvoke;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
+
+import cn.hutool.json.JSONUtil;
+import com.im.flashcomms.transaction.annotation.SecureInvoke;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
+
 
 /**
  * Description: 发送mq工具类
- * Author: <a href="https://github.com/zongzibinbin">abin</a>
+ * Author: hyj
  * Date: 2023-08-12
  */
 public class MQProducer {
 
     @Autowired
-    private RocketMQTemplate rocketMQTemplate;
+    private RabbitTemplate rabbitTemplate;
 
-    public void sendMsg(String topic, Object body) {
-        Message<Object> build = MessageBuilder.withPayload(body).build();
-        rocketMQTemplate.send(topic, build);
+    public void sendMsg(String exchange, Object body) {
+        String s = JSONUtil.toJsonStr(body);
+        rabbitTemplate.convertAndSend(exchange,"flashcomms",s);
     }
+
+
 
     /**
      * 发送可靠消息，在事务提交后保证发送成功
      *
-     * @param topic
+     * @param exchange
      * @param body
      */
     @SecureInvoke
-    public void sendSecureMsg(String topic, Object body, Object key) {
-        Message<Object> build = MessageBuilder
-                .withPayload(body)
-                .setHeader("KEYS", key)
-                .build();
-        rocketMQTemplate.send(topic, build);
+    public void sendSecureMsg(String exchange, Object body,String key) {
+        rabbitTemplate.convertAndSend(exchange,key,body);
     }
 }

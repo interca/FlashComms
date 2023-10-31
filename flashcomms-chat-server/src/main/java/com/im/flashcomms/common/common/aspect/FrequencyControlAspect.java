@@ -6,7 +6,7 @@ import com.im.flashcomms.common.common.annotation.FrequencyControl;
 import com.im.flashcomms.common.common.domain.dto.FrequencyControlDTO;
 import com.im.flashcomms.common.common.service.frequencycontrol.FrequencyControlUtil;
 import com.im.flashcomms.common.common.utils.RequestHolder;
-import com.im.flashcomms.common.common.utils.SpElUtils;
+import com.im.flashcomms.utils.SpElUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

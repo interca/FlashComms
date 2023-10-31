@@ -1,11 +1,12 @@
 package com.im.flashcomms.transaction.config;
 
-import com.abin.mallchat.transaction.annotation.SecureInvokeConfigurer;
-import com.abin.mallchat.transaction.aspect.SecureInvokeAspect;
-import com.abin.mallchat.transaction.dao.SecureInvokeRecordDao;
-import com.abin.mallchat.transaction.mapper.SecureInvokeRecordMapper;
-import com.abin.mallchat.transaction.service.MQProducer;
-import com.abin.mallchat.transaction.service.SecureInvokeService;
+
+import com.im.flashcomms.transaction.annotation.SecureInvokeConfigurer;
+import com.im.flashcomms.transaction.aspect.SecureInvokeAspect;
+import com.im.flashcomms.transaction.dao.SecureInvokeRecordDao;
+import com.im.flashcomms.transaction.mapper.SecureInvokeRecordMapper;
+import com.im.flashcomms.transaction.service.MQProducer;
+import com.im.flashcomms.transaction.service.SecureInvokeService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;

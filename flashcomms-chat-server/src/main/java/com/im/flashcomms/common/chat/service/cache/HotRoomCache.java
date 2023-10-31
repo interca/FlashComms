@@ -5,7 +5,7 @@ import com.im.flashcomms.common.common.constant.RedisKey;
 import com.im.flashcomms.common.common.domain.vo.req.CursorPageBaseReq;
 import com.im.flashcomms.common.common.domain.vo.resp.CursorPageBaseResp;
 import com.im.flashcomms.common.common.utils.CursorUtils;
-import com.im.flashcomms.common.common.utils.RedisUtils;
+import com.im.flashcomms.utils.RedisUtils;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 

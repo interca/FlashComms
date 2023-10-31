@@ -48,7 +48,6 @@
             <artifactId>java-jwt</artifactId>
             <version>3.19.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.knuddels</groupId>
             <artifactId>jtokkit</artifactId>
@@ -59,12 +58,6 @@
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
         </dependency>
-        <!--rabbitmq依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>

@@ -1,4 +1,4 @@
-package com.im.flashcomms.common.common.cache;
+package com.im.flashcomms.common.common.algorithm.cache;
 
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
