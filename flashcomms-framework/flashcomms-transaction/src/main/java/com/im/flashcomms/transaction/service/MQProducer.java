@@ -19,9 +19,9 @@ public class MQProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendMsg(String exchange, Object body) {
+    public void sendMsg(String exchange,String key, Object body) {
         String s = JSONUtil.toJsonStr(body);
-        rabbitTemplate.convertAndSend(exchange,"flashcomms",s);
+        rabbitTemplate.convertAndSend(exchange,key,s);
     }
 
 
