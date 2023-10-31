@@ -8,7 +8,9 @@ import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.enums.IdempotentEnum;
 import com.im.flashcomms.common.user.domain.enums.ItemEnum;
 import com.im.flashcomms.common.user.domain.enums.UserActiveStatusEnum;
+import com.im.flashcomms.common.user.service.Impl.PushService;
 import com.im.flashcomms.common.user.service.IpService;
+import com.im.flashcomms.common.user.service.adapter.WSAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -27,6 +29,19 @@ public class UserOnlineListener {
     @Autowired
     private UserCache userCache;
 
+    @Autowired
+    private WSAdapter wsAdapter;
+    @Autowired
+    private PushService pushService;
+
+    @Async
+    @EventListener(classes = UserOnlineEvent.class)
+    public void saveRedisAndPush(UserOnlineEvent event) {
+        User user = event.getUser();
+        userCache.online(user.getId(), user.getLastOptTime());
+        //推送给所有在线用户，该用户登录成功
+        pushService.sendPushMsg(wsAdapter.buildOnlineNotifyResp(event.getUser()));
+    }
     /**
      * 在事物结束后才执行
      * @param event

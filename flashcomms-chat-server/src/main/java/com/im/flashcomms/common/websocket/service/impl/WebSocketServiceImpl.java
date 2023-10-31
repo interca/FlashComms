@@ -1,15 +1,18 @@
 package com.im.flashcomms.common.websocket.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.im.flashcomms.common.common.event.UserOnlineEvent;
+import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.dao.UserDao;
 import com.im.flashcomms.common.user.domain.entity.User;
 import com.im.flashcomms.common.user.domain.enums.RoleEnum;
 import com.im.flashcomms.common.user.service.IRoleService;
 import com.im.flashcomms.common.user.service.LoginService;
+import com.im.flashcomms.common.user.service.adapter.WSAdapter;
 import com.im.flashcomms.common.websocket.NettyUtil;
 import com.im.flashcomms.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.im.flashcomms.common.websocket.domain.enums.WSRespTypeEnum;
@@ -19,6 +22,7 @@ import com.im.flashcomms.common.websocket.service.WebSocketService;
 import com.im.flashcomms.common.websocket.service.adapter.WebSocketAdapter;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.service.WxService;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -36,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.im.flashcomms.common.common.config.ThreadPoolConfig.WS_EXECUTOR;
 
@@ -44,6 +49,7 @@ import static com.im.flashcomms.common.common.config.ThreadPoolConfig.WS_EXECUTO
  * 专门管理websocket的逻辑
  */
 @Service
+@Slf4j
 public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
@@ -52,6 +58,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserCache userCache;
 
     @Autowired
     private LoginService loginService;
@@ -85,7 +94,10 @@ public class WebSocketServiceImpl implements WebSocketService {
             .expireAfterAccess(Duration.ofHours(1))
             .build();
 
-
+    /**
+     * 所有在线的用户和对应的socket
+     */
+    private static final ConcurrentHashMap<Long, CopyOnWriteArrayList<Channel>> ONLINE_UID_MAP = new ConcurrentHashMap<>();
 
 
     /**
@@ -176,6 +188,16 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     @Override
+    public Boolean scanSuccess(Integer loginCode) {
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(loginCode);
+        if (Objects.nonNull(channel)) {
+            sendMsg(channel, WSAdapter.buildScanSuccessResp());
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
     public void sendMsgToAll(WSBaseResp<?> wsBaseResp) {
         ONLINE_WS_MAP.forEach((channel, wsChannelExtraDTO) -> {
             threadPoolTaskExecutor.execute(()->{
@@ -198,9 +220,41 @@ public class WebSocketServiceImpl implements WebSocketService {
         user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel,NettyUtil.IP));
         //发布用户上线成功的事件
-        applicationEventPublisher.publishEvent(new UserOnlineEvent(this,user));
+        boolean online = userCache.isOnline(user.getId());
+        if (!online) {
+            user.setLastOptTime(new Date());
+            user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
+            applicationEventPublisher.publishEvent(new UserOnlineEvent(this, user));
+        }
     }
 
+    //entrySet的值不是快照数据,但是它支持遍历，所以无所谓了，不用快照也行。
+    @Override
+    public void sendToAllOnline(WSBaseResp<?> wsBaseResp, Long skipUid) {
+        ONLINE_WS_MAP.forEach((channel, ext) -> {
+            if (Objects.nonNull(skipUid) && Objects.equals(ext.getUid(), skipUid)) {
+                return;
+            }
+            threadPoolTaskExecutor.execute(() -> sendMsg(channel, wsBaseResp));
+        });
+    }
+
+    @Override
+    public void sendToAllOnline(WSBaseResp<?> wsBaseResp) {
+        sendToAllOnline(wsBaseResp, null);
+    }
+
+    @Override
+    public void sendToUid(WSBaseResp<?> wsBaseResp, Long uid) {
+        CopyOnWriteArrayList<Channel> channels = ONLINE_UID_MAP.get(uid);
+        if (CollectionUtil.isEmpty(channels)) {
+            log.info("用户：{}不在线", uid);
+            return;
+        }
+        channels.forEach(channel -> {
+            threadPoolTaskExecutor.execute(() -> sendMsg(channel, wsBaseResp));
+        });
+    }
 
     /**
      * 推送信息

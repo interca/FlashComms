@@ -60,7 +60,7 @@ public class Room implements Serializable {
      * 最后一条消息id
      */
     @TableField("last_msg_id")
-    private Long lastMsgId;
+    private Long lastMsgId = 0L;
 
     /**
      * 额外信息（根据不同类型房间有不同存储的东西）

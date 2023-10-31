@@ -37,12 +37,12 @@ import java.util.Objects;
 
 
 /**
- * rabnbitmq监听类
+ * Description: 发送消息更新房间收信箱，并同步给房间成员信箱
  * @author  hyj
  * @since  2022-12-15
  */
 @Component
-public class RabbitMqListener {
+public class MsgSendConsumer {
 
     @Autowired
     private WebSocketService webSocketService;
@@ -77,9 +77,9 @@ public class RabbitMqListener {
     /**
      * 监听发送消息
      */
-    @RabbitListener(queues = RabbitmqConfig.SCAN_MSG_QUEUE)
+    @RabbitListener(queues = RabbitmqConfig.SEND_MSG_QUEUE)
     @Transactional
-    public  void robTicket(Message msg, Channel channel) throws Exception {
+    public  void msg(Message msg, Channel channel) throws Exception {
         String str ;
         try {
             //接受消息

@@ -23,6 +23,7 @@ public class RoomDao extends ServiceImpl<RoomMapper, Room> {
     public void refreshActiveTime(Long roomId, Long msgId, Date msgTime) {
         lambdaUpdate()
                 .eq(Room::getId, roomId)
+                .lt(Room::getLastMsgId,msgId)
                 .set(Room::getLastMsgId, msgId)
                 .set(Room::getActiveTime, msgTime)
                 .update();
