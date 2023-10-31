@@ -24,6 +24,9 @@ public abstract class AbstractMsgHandler<Req> {
     private MessageDao messageDao;
     private Class<Req> bodyClass;
 
+    /**
+     * 每个子类都会执行这个方法 把自己注册到工厂
+     */
     @PostConstruct
     private void init() {
         ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
