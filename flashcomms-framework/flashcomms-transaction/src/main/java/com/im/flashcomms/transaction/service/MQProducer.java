@@ -33,7 +33,7 @@ public class MQProducer {
      * @param body
      */
     @SecureInvoke
-    public void sendSecureMsg(String exchange, Object body,String key) {
+    public void sendSecureMsg(String exchange, String key,Object body) {
         System.out.println("sss");
         rabbitTemplate.convertAndSend(exchange,key,body);
     }

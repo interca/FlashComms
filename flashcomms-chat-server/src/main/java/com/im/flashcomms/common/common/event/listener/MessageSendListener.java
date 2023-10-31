@@ -68,7 +68,7 @@ public class MessageSendListener {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT, classes = MessageSendEvent.class, fallbackExecution = true)
     public void messageRoute(MessageSendEvent event) {
         Long msgId = event.getMsgId();
-        mqProducer.sendSecureMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE, new MsgSendMessageDTO(msgId), "flashcomms");
+        mqProducer.sendSecureMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE, RabbitmqConfig.SEND_MSG_KEY,new MsgSendMessageDTO(msgId));
     }
 
 

@@ -21,14 +21,14 @@ public class PushService {
     private MQProducer mqProducer;
 
     public void sendPushMsg(WSBaseResp<?> msg, List<Long> uidList) {
-        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE, new PushMessageDTO(uidList, msg));
+        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE,RabbitmqConfig.PUSH_KEY, new PushMessageDTO(uidList, msg));
     }
 
     public void sendPushMsg(WSBaseResp<?> msg, Long uid) {
-        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE, new PushMessageDTO(uid, msg));
+        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE,RabbitmqConfig.PUSH_KEY, new PushMessageDTO(uid, msg));
     }
 
     public void sendPushMsg(WSBaseResp<?> msg) {
-        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE, new PushMessageDTO(msg));
+        mqProducer.sendMsg(RabbitmqConfig.FLASHCOMMS_MSG_EXCHANGE,RabbitmqConfig.PUSH_KEY ,new PushMessageDTO(msg));
     }
 }

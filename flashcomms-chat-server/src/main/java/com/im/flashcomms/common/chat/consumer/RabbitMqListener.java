@@ -16,6 +16,7 @@ import com.im.flashcomms.common.chat.service.WeChatMsgOperationService;
 import com.im.flashcomms.common.chat.service.cache.GroupMemberCache;
 import com.im.flashcomms.common.chat.service.cache.HotRoomCache;
 import com.im.flashcomms.common.chat.service.cache.RoomCache;
+import com.im.flashcomms.common.common.config.RabbitmqConfig;
 import com.im.flashcomms.common.common.domain.dto.MsgSendMessageDTO;
 import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.service.Impl.PushService;
@@ -76,7 +77,7 @@ public class RabbitMqListener {
     /**
      * 监听发送消息
      */
-    @RabbitListener(queues = "flascomms-msg-queue")
+    @RabbitListener(queues = RabbitmqConfig.SCAN_MSG_QUEUE)
     @Transactional
     public  void robTicket(Message msg, Channel channel) throws Exception {
         String str ;

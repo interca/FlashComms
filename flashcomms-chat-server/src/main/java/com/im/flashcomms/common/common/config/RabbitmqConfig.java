@@ -22,28 +22,28 @@ public class RabbitmqConfig {
     /**
      * 消息发送mq
      */
-     static final String  SEND_MSG_QUEUE = "chat_send_msg_queue";
-     static final String SEND_MSG_KEY = "chat_send_msg_key";
+     public static  final String  SEND_MSG_QUEUE = "chat_send_msg_queue";
+     public static final String SEND_MSG_KEY = "chat_send_msg_key";
 
     /**
      * push用户
      */
-    static final String PUSH_QUEUE = "websocket_push_queue";
-    static final String PUSH_KEY = "websocket_push_key";
+    public static final String PUSH_QUEUE = "websocket_push_queue";
+    public static final String PUSH_KEY = "websocket_push_key";
 
     /**
      * (授权完成后)登录信息mq
      */
-    static final String LOGIN_MSG_QUEUE = "user_login_send_msg_queue";
-    static final  String LOGIN_MSG_KEY = "user_login_send_msg_key";
+    public static final String LOGIN_MSG_QUEUE = "user_login_send_msg_queue";
+    public static final  String LOGIN_MSG_KEY = "user_login_send_msg_key";
 
 
 
     /**
      * 扫码成功 信息发送mq
      */
-    static final String SCAN_MSG_QUEUE = "user_scan_send_msg_queue";
-    static final String SCAN_MSG_KEY = "user_scan_send_msg_key";
+    public static final String SCAN_MSG_QUEUE = "user_scan_send_msg_queue";
+    public static final String SCAN_MSG_KEY = "user_scan_send_msg_key";
 
 
 
