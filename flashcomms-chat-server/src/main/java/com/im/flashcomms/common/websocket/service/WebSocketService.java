@@ -21,11 +21,7 @@ public interface WebSocketService {
     void handleLoginReq(Channel channel) throws WxErrorException;
 
 
-    /**
-     * channel断开连接
-     * @param channel
-     */
-    void offLine(Channel channel);
+
 
     /**
      * 扫码成功等待用户授权
@@ -77,4 +73,10 @@ public interface WebSocketService {
     void sendToAllOnline(WSBaseResp<?> wsBaseResp);
 
     void sendToUid(WSBaseResp<?> wsBaseResp, Long uid);
+
+    /**
+     * 处理端口连接事件
+     * @param channel
+     */
+    void remove(Channel channel);
 }

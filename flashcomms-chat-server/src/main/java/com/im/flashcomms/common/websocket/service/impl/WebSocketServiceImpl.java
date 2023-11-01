@@ -1,10 +1,12 @@
 package com.im.flashcomms.common.websocket.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.im.flashcomms.common.common.event.UserOfflineEvent;
 import com.im.flashcomms.common.common.event.UserOnlineEvent;
 import com.im.flashcomms.common.user.cache.UserCache;
 import com.im.flashcomms.common.user.dao.UserDao;
@@ -39,6 +41,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -125,17 +128,35 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
 
-    /**
-     * 用户下线统一处理
-     * @param channel
-     */
     @Override
-    public void offLine(Channel channel) {
-        //移除channel
-        ONLINE_WS_MAP.remove(channel);
-
-        //todo 用户下线
+    public void remove(Channel channel) {
+        WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
+        Optional<Long> uidOptional = Optional.ofNullable(wsChannelExtraDTO)
+                .map(WSChannelExtraDTO::getUid);
+        boolean offlineAll = offline(channel, uidOptional);
+        if (uidOptional.isPresent() && offlineAll) {//已登录用户断连,并且全下线成功
+            User user = new User();
+            user.setId(uidOptional.get());
+            user.setLastOptTime(new Date());
+            applicationEventPublisher.publishEvent(new UserOfflineEvent(this, user));
+        }
     }
+    /**
+     * 用户下线
+     * return 是否全下线成功
+     */
+    private boolean offline(Channel channel, Optional<Long> uidOptional) {
+        ONLINE_WS_MAP.remove(channel);
+        if (uidOptional.isPresent()) {
+            CopyOnWriteArrayList<Channel> channels = ONLINE_UID_MAP.get(uidOptional.get());
+            if (CollectionUtil.isNotEmpty(channels)) {
+                channels.removeIf(ch -> Objects.equals(ch, channel));
+            }
+            return CollectionUtil.isEmpty(ONLINE_UID_MAP.get(uidOptional.get()));
+        }
+        return true;
+    }
+
 
     /**
      * 扫码成功等待用户授权
@@ -213,12 +234,10 @@ public class WebSocketServiceImpl implements WebSocketService {
      * @param token
      */
     private void loginSuccess(Channel channel, User user, String token) {
-        //保存channel对应的uid
-        WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
-        wsChannelExtraDTO.setUid(user.getId());
+        //更新上线列表
+        online(channel, user.getId());
+        //返回给用户登录成功
         sendMsg(channel,WebSocketAdapter.buildResp(user,token,roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGER)));
-        user.setLastOptTime(new Date());
-        user.refreshIp(NettyUtil.getAttr(channel,NettyUtil.IP));
         //发布用户上线成功的事件
         boolean online = userCache.isOnline(user.getId());
         if (!online) {
@@ -226,6 +245,29 @@ public class WebSocketServiceImpl implements WebSocketService {
             user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
             applicationEventPublisher.publishEvent(new UserOnlineEvent(this, user));
         }
+    }
+
+    /**
+     * 用户上线
+     */
+    private void online(Channel channel, Long uid) {
+        getOrInitChannelExt(channel).setUid(uid);
+        ONLINE_UID_MAP.putIfAbsent(uid, new CopyOnWriteArrayList<>());
+        ONLINE_UID_MAP.get(uid).add(channel);
+        NettyUtil.setAttr(channel, NettyUtil.UID, uid);
+    }
+
+    /**
+     * 如果在线列表不存在，就先把该channel放进在线列表
+     *
+     * @param channel
+     * @return
+     */
+    private WSChannelExtraDTO getOrInitChannelExt(Channel channel) {
+        WSChannelExtraDTO wsChannelExtraDTO =
+                ONLINE_WS_MAP.getOrDefault(channel, new WSChannelExtraDTO());
+        WSChannelExtraDTO old = ONLINE_WS_MAP.putIfAbsent(channel, wsChannelExtraDTO);
+        return ObjectUtil.isNull(old) ? wsChannelExtraDTO : old;
     }
 
     //entrySet的值不是快照数据,但是它支持遍历，所以无所谓了，不用快照也行。
@@ -255,6 +297,8 @@ public class WebSocketServiceImpl implements WebSocketService {
             threadPoolTaskExecutor.execute(() -> sendMsg(channel, wsBaseResp));
         });
     }
+
+
 
     /**
      * 推送信息

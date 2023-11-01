@@ -88,7 +88,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
      * @param channel
      */
     private void userOffLine(Channel channel){
-        webSocketService.offLine(channel);
+        webSocketService.remove(channel);
         channel.close();
     }
 
